@@ -20,41 +20,22 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
-  data() {
-    return {
-      messages: [],
-    };
-  },
   methods: {
     updateMessage(message, status) {
-      const timestamp = Math.floor(new Date() / 1000);
-      this.messages.push({
-        message,
-        status,
-        timestamp,
-      });
-      this.removeMessageWithTiming(timestamp);
+      this.$store.dispatch('updateMessage', { message, status });
     },
     removeMessage(num) {
-      this.messages.splice(num, 1);
+      this.$store.commit('REMOVEMESSAGE', num);
     },
     removeMessageWithTiming(timestamp) {
-      const vm = this;
-      setTimeout(() => {
-        vm.messages.forEach((item, i) => {
-          if (item.timestamp === timestamp) {
-            vm.messages.splice(i, 1);
-          }
-        });
-      }, 3000);
+      this.$store.dispatch('removeMessageWithTiming', timestamp);
     },
   },
-  created() {
-    const vm = this;
-    vm.$bus.$on('message:push', (message, status = 'warning') => {
-      vm.updateMessage(message, status);
-    });
+  computed: {
+    ...mapState(['messages']),
   },
 };
 </script>

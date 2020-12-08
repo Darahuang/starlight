@@ -9,61 +9,24 @@
           </li>
           <li class="breadcrumb-item">產品列表</li>
           <li class="breadcrumb-item active" aria-current="page">
-            {{ category }}
+            <span v-if="type">{{type}}</span> <span v-else>所有餐點</span>
           </li>
         </ol>
       </nav>
       <div class="row mt-4">
         <div class="col-md-3 mb-3">
           <div class="list-group">
-            <a
-              href="#所有餐點"
-              class="list-group-item list-group-item-action"
-              data-toggle="list"
-              :class="{ active: category === '所有餐點' }"
-              @click.prevent="category = '所有餐點'"
-              >所有餐點</a
-            >
-            <a
-              href="#單片蛋糕"
-              class="list-group-item list-group-item-action"
-              data-toggle="list"
-              :class="{ active: category === '單片蛋糕' }"
-              @click.prevent="category = '單片蛋糕'"
-              >單片蛋糕</a
-            >
-            <a
-              href="#生日蛋糕"
-              class="list-group-item list-group-item-action"
-              data-toggle="list"
-              :class="{ active: category === '生日蛋糕' }"
-              @click.prevent="category = '生日蛋糕'"
-              >生日蛋糕</a
-            >
-            <a
-              href="#點心&輕食"
-              class="list-group-item list-group-item-action"
-              data-toggle="list"
-              :class="{ active: category === '點心&輕食' }"
-              @click.prevent="category = '點心&輕食'"
-              >點心&輕食</a
-            >
-            <a
-              href="#節慶限定"
-              class="list-group-item list-group-item-action"
-              data-toggle="list"
-              :class="{ active: category === '節慶限定' }"
-              @click.prevent="category = '節慶限定'"
-              >節慶限定</a
-            >
-            <a
-              href="#烘焙教學"
-              class="list-group-item list-group-item-action"
-              data-toggle="list"
-              :class="{ active: category === '烘焙教學' }"
-              @click.prevent="category = '烘焙教學'"
-              >烘焙教學</a
-            >
+            <a href="#"  class="list-group-item list-group-item-action"
+            :class="{'active':type === ''}"
+            @click.prevent="changeCategory('')">
+              所有餐點
+            </a>
+            <a href="#" class="list-group-item list-group-item-action"
+            v-for="item in category" :key="item"
+            :class="{'active':item === type}"
+            @click.prevent="changeCategory(item)">
+              {{item}}
+            </a>
             <router-link
               to="/customize"
               class="list-group-item list-group-item-action"
@@ -97,12 +60,17 @@
                   :key="item.id"
                 >
                   <div class="card border-0">
+                    <div class="item-icon text-primary" @click="addToFavList(item.id)" >
+                       <i class="far fa-heart  heart text-danger" v-if="!checkFavStatus(item)"></i>
+                       <i class="fas fa-heart  heart text-danger" v-else></i>
+                    </div>
                     <div
                       class="card-image cursor bg-cover"
                       @click="getOneProduct(item.id)"
                       style="height: 200px"
                       :style="{ backgroundImage: `url(${item.imageUrl})` }"
-                    ></div>
+                    >
+                    </div>
                     <div
                       class="card-body cursor"
                       @click="getOneProduct(item.id)"
@@ -143,7 +111,7 @@
                       <button
                         type="button"
                         class="btn btn-primary btn-sm ml-auto"
-                        @click="addtoCart(item.id, qty)"
+                        @click="addtoCart(item.id)"
                         :disabled="disable"
                       >
                         <i
@@ -217,189 +185,75 @@
             </div>
           </div>
         </div>
+        <div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex';
 
 export default {
   data() {
     return {
-      products: [],
-      saveItems: [],
-      localStorageData: JSON.parse(localStorage.getItem('favItems')) || [],
-      isLoading: false,
-      category: '所有餐點',
-      cartNumber: '',
-      favNumber: '',
-      pagination: {},
-      oneProduct: {},
-      status: {
-        loadingItem: '',
-      },
-      cart: {},
-      form: {
-        user: {
-          name: '',
-          email: '',
-          tel: '',
-          address: '',
-        },
-        message: '',
-      },
+      paginationData: [],
+      page: {},
       show: true,
-      disable: false,
     };
   },
   methods: {
-    getProducts() {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products/all`;
-      vm.isLoading = true;
-      vm.axios.get(api).then((response) => {
-        vm.products = response.data.products;
-        vm.pagination = response.data.pagination;
-        vm.isLoading = false;
-        vm.localStorageData = JSON.parse(localStorage.getItem('favItems'));
-        vm.localStorageData.forEach((item) => {
-          vm.products.forEach((el) => {
-            if (item.id === el.id) {
-              // eslint-disable-next-line no-param-reassign
-              el.favItem = true;
-              vm.saveItems.push(el);
-              vm.$bus.$emit('fav', vm.favNumber);
-            }
-          });
-        });
-      });
+    getAllProducts() {
+      this.$store.dispatch('getAllProducts');
     },
     getOneProduct(id) {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/product/${id}`;
-      vm.status.loadingItem = id;
-      vm.axios.get(api).then((response) => {
-        vm.oneProduct = response.data.product;
-        vm.$router.push(`/customer_orders/${id}`);
-        vm.status.loadingItem = '';
-      });
+      this.$store.dispatch('getOneProduct', id);
     },
     addtoCart(id, qty = 1) {
       const vm = this;
       const target = vm.cart.carts.filter((items) => items.product_id === id); // 過濾是否有相同產品重覆加入購物車
       if (target.length > 0) {
-        const sameCartItem = target[0];
-        const originCartId = sameCartItem.id; // 購物車id
-        const orginQty = sameCartItem.qty;
+        const previousCart = target[0]; // 原先的購物車
+        const originCartId = previousCart.id; // 原先的購物車id
+        const orginQty = previousCart.qty;
         const newQty = orginQty + qty;
-        const originProductId = sameCartItem.product.id; // 產品id
-        const delAPI = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart/${originCartId}`;
-        const addAPI = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`;
-        const changeCart = {
-          product_id: originProductId,
-          qty: newQty,
-        };
-        vm.isLoading = true;
-        vm.disable = true;
-        vm.axios // 首先移除加入購物車的單筆商品,並將重覆加入的商品合併數量後再傳送到加入購物車的API,再重新取得購物車列表
-          .all([
-            vm.axios.delete(delAPI),
-            vm.axios.post(addAPI, { data: changeCart }),
-          ])
-          .then(
-            vm.axios.spread(() => {
-              vm.getCart();
-              vm.isLoading = false;
-              vm.disable = false;
-              vm.$bus.$emit('message:push', '已加入購物車', 'warning');
-            }),
-          );
+        const originProductId = previousCart.product.id; // 產品id
+        vm.$store.dispatch('updateQty', { originCartId, originProductId, newQty });
       } else {
-        const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`;
-        vm.isLoading = true;
-        const cart = {
-          product_id: id,
-          qty,
-        };
-        vm.axios.post(api, { data: cart }).then((response) => {
-          vm.isLoading = false;
-          vm.getCart();
-          vm.$bus.$emit('message:push', response.data.message, 'warning');
-        });
+        vm.$store.dispatch('addToCart', { id, qty });
       }
     },
     getCart() {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`;
-      vm.isLoading = true;
-      vm.axios.get(api).then((response) => {
-        vm.cart = response.data.data;
-        vm.cartNumber = response.data.data.carts.length;
-        vm.isLoading = false;
-        vm.$bus.$emit('cart', vm.cartNumber);
-      });
+      this.$store.dispatch('getCart');
     },
-    backtoCart() {
-      const vm = this;
-      vm.$router.push('/cart');
+    changeCategory(text) {
+      this.$store.commit('CHANGECATEGORY', text);
     },
+    addToFavList(id) {
+      this.$store.dispatch('addToFavList', id);
+    },
+    checkFavStatus(item) {
+      const vm = this;
+      if (vm.collected === null) {
+        vm.collected = [];
+      }
+      if (vm.collected.find((el) => el.id === item.id)) {
+        return true;
+      }
+      return false;
+    },
+
   },
   computed: {
-    filterCategory() {
-      const vm = this;
-      let filterOrder = [];
-      if (vm.category === '單片蛋糕') {
-        filterOrder = vm.products.filter(
-          (item) => item.category === '單片蛋糕',
-        );
-      } else if (vm.category === '生日蛋糕') {
-        filterOrder = vm.products.filter(
-          (item) => item.category === '生日蛋糕',
-        );
-      } else if (vm.category === '節慶限定') {
-        filterOrder = vm.products.filter(
-          (item) => item.category === '節慶限定',
-        );
-      } else if (vm.category === '點心&輕食') {
-        filterOrder = vm.products.filter(
-          (item) => item.category === '點心&輕食',
-        );
-      } else if (vm.category === '所有餐點') {
-        filterOrder = vm.products;
-      } else if (vm.category === '烘焙教學') {
-        filterOrder = vm.products.filter(
-          (item) => item.category === '烘焙教學',
-        );
-      }
-      return filterOrder;
-    },
-    sortOrder() {
-      const vm = this;
-      let newOrder = [];
-      if (vm.orders.length) {
-        newOrder = vm.orders.sort((a, b) => {
-          const aIsPaid = a.is_paid ? 1 : 0;
-          const bIsPaid = b.is_paid ? 1 : 0;
-          return bIsPaid - aIsPaid;
-        });
-      }
-      return newOrder;
-    },
+    ...mapState(['allProducts', 'cart', 'category', 'type', 'isLoading', 'status', 'disable', 'collected']),
+    ...mapGetters(['filterCategory']),
   },
   created() {
-    this.getProducts();
+    this.getAllProducts();
     this.getCart();
   },
-  watch: {
-    favoriteItem() {
-      const vm = this;
-      if (vm.favList.length !== vm.localList.length) {
-        vm.favList = [];
-        this.save();
-      }
-    },
-  },
+
 };
 </script>
 
@@ -413,6 +267,7 @@ export default {
 .card-image {
   transform: scale(1, 1);
   transition: all 1s ease-out;
+
 }
 .card-image:hover {
   transform: scale(1.15, 1.15);
@@ -424,10 +279,21 @@ export default {
   background-size: cover;
   background-position: center center;
 }
-.heart {
+.item-icon {
   position: absolute;
-  right: 40px;
-  top: 20px;
+  right: 10px;
+  top:170px;
   z-index: 2;
+  width:30px;
+  height: 30px;
+  font-size: 18px;
+  border-radius: 50%;
+  background-color: #cbe2d4a8;
+  line-height: 30px;
+  cursor: default;
 }
+.heart{
+  margin-left: 5px;
+}
+
 </style>

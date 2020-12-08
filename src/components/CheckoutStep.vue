@@ -1,10 +1,10 @@
 <template>
   <div>
     <div class="container my-5">
-      <div class="row mx-auto">
+      <div class="row">
         <div class="col-md">
           <span
-            class="badge badge-pill step py-3"
+            class="badge badge-pill step py-3 bg-deep"
             :class="{ 'bg-accent': total,  }"
 
             >1.填寫訂購資料</span
@@ -30,13 +30,14 @@
 </template>
 
 <script>
+
 export default {
   props: ['total', 'paid'],
 };
 </script>
 <style scoped>
 .step {
-  width: 250px;
+  width: 350px;
 }
 
 </style>

@@ -52,11 +52,6 @@
               <i class="fa fa-list mr-1" aria-hidden="true"></i>模擬訂單
             </router-link>
           </li>
-          <li class="nav-item">
-            <router-link class="nav-link" to="/cart">
-              <i class="fas fa-shopping-cart mr-1"></i>購物車
-            </router-link>
-          </li>
         </ul>
       </div>
     </nav>

@@ -6,6 +6,7 @@ import VueI18n from 'vue-i18n';
 window.Vue = Vue;
 const i18n = new VueI18n({
   locale: 'zhTw',
+
 });
 Vue.use(VeeValidate, {
   i18n,

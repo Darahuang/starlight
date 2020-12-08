@@ -37,17 +37,12 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import Swiper from '../../node_modules/swiper/swiper-bundle';
 
 export default {
   data() {
     return {
-      products: [],
-      cart: {},
-      isLoading: false,
-      status: {
-        loadingItem: '',
-      },
     };
   },
   mounted() {
@@ -60,14 +55,10 @@ export default {
       new Swiper('.swiper-container', {
         slidesPerView: 1,
         spaceBetween: 10,
-        loop: true,
         autoplay: {
           delay: 2500,
+          stopOnLastSlide: false,
           disableOnInteraction: false,
-        },
-        pagination: {
-          el: '.swiper-pagination',
-          clickable: true,
         },
         breakpoints: {
           768: {
@@ -78,37 +69,14 @@ export default {
       });
     },
     getProducts(page = 1) {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products?page=${page}`;
-      vm.isLoading = true;
-      vm.axios.get(api).then((response) => {
-        vm.products = response.data.products;
-        vm.isLoading = false;
-      });
-    },
-    addtoCart(id, qty = 1) {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`;
-      vm.isLoading = true;
-      const cart = {
-        product_id: id,
-        qty,
-      };
-      vm.axios.post(api, { data: cart }).then(() => {
-        vm.isLoading = false;
-        vm.$bus.$emit('getCart');
-      });
+      this.$store.dispatch('getProducts', page);
     },
     getOneProduct(id) {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/product/${id}`;
-      vm.status.loadingItem = id;
-      vm.axios.get(api).then((response) => {
-        vm.oneProduct = response.data.product;
-        vm.$router.push(`/customer_orders/${id}`);
-        vm.status.loadingItem = '';
-      });
+      this.$store.dispatch('getOneProduct', id);
     },
+  },
+  computed: {
+    ...mapState(['isLoading', 'status', 'products']),
   },
 };
 </script>

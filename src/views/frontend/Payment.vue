@@ -101,6 +101,7 @@
 
 <script>
 import CheckoutStep from '@/components/CheckoutStep.vue';
+import { mapState } from 'vuex';
 
 export default {
   components: {
@@ -108,50 +109,35 @@ export default {
   },
   data() {
     return {
-      orderId: '',
-      order: {
-        user: {},
-      },
-      isLoading: false,
       copy: false,
     };
   },
   methods: {
     getOrder() {
-      const vm = this;
-      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/order/${vm.orderId}`;
-      vm.isLoading = true;
-      vm.axios.get(url).then((response) => {
-        vm.order = response.data.order;
-        vm.isLoading = false;
-      });
+      this.$store.dispatch('getOrder');
     },
     pay() {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/pay/${vm.orderId}`;
-      vm.isLoading = true;
-      vm.axios.post(api).then(() => {
-        vm.getOrder();
-        vm.isLoading = false;
-      });
+      this.$store.dispatch('pay');
     },
     copylink() {
       const vm = this;
-      const btn = document.querySelector('#btn');
-      btn.addEventListener('click', () => {
-        const input = document.querySelector('#demoInput');
-        input.select();
-        if (document.execCommand('copy')) {
-          document.execCommand('copy');
-          vm.copy = true;
-          vm.$bus.$emit('message:push', '複製成功', 'warning');
-        }
-      });
+      const input = document.querySelector('#demoInput');
+      input.select();
+      if (document.execCommand('copy')) {
+        document.execCommand('copy');
+        vm.copy = true;
+        const message = '複製成功';
+        const status = 'warning';
+        vm.$store.dispatch('updateMessage', { message, status });
+      }
     },
   },
   created() {
-    this.orderId = this.$route.params.orderId;
+    this.$store.commit('ORDERID');
     this.getOrder();
+  },
+  computed: {
+    ...mapState(['orderId', 'isLoading', 'order']),
   },
 };
 </script>

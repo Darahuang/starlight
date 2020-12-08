@@ -190,37 +190,19 @@
 import $ from 'jquery';
 import Pagination from '@/components/Pagination.vue';
 import AlertMessage from '@/components/AlertMessage.vue';
+import { mapState } from 'vuex';
 
 export default {
   components: {
     Pagination,
     AlertMessage,
   },
-  data() {
-    return {
-      orders: [],
-      isLoading: false,
-      pagination: {},
-      tempOrder: {
-        user: {},
-      },
-    };
-  },
   methods: {
     getOrder(page = 1) {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/orders?page=${page}`;
-      vm.isLoading = true;
-      vm.axios.get(api).then((response) => {
-        vm.orders = response.data.orders;
-        vm.pagination = response.data.pagination;
-        vm.isLoading = false;
-      });
+      this.$store.dispatch('backend/getOrder', page);
     },
     openOrderModal(item) {
-      const vm = this;
-      vm.tempOrder = { ...item }; // Object.assign({}, item);
-      $('#orderModal').modal('show');
+      this.$store.commit('backend/OPENORDERMODAL', item);
     },
     updateOrder() {
       const vm = this;
@@ -230,8 +212,10 @@ export default {
           vm.axios.put(api, { data: vm.tempOrder }).then((response) => {
             if (response.data.success) {
               $('#orderModal').modal('hide');
+              const { message } = response.data;
+              const status = 'warning';
+              vm.$store.dispatch('updateMessage', { message, status });
               vm.getOrder();
-              vm.$bus.$emit('message:push', response.data.message, 'warning');
             }
           });
         } else {
@@ -242,6 +226,8 @@ export default {
     },
   },
   computed: {
+    ...mapState('backend', ['orders', 'pagination']),
+    ...mapState(['isLoading']),
     sortOrder() {
       const vm = this;
       let newOrder = [];
@@ -253,6 +239,14 @@ export default {
         });
       }
       return newOrder;
+    },
+    tempOrder: {
+      get() {
+        return this.$store.state.backend.tempOrder;
+      },
+      set(isNew, item) {
+        this.$store.commit('backend/OPENMODAL', { isNew, item });
+      },
     },
   },
   created() {

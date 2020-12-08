@@ -51,9 +51,9 @@
         </tbody>
       </table>
     </div>
+
     <Pagination
-      :childPagination="pagination"
-      @emitPage="getProducts"
+      :childPagination="pagination" @emitPage="getProducts"
     ></Pagination>
     <!-- Modal 新增產品 -->
     <div
@@ -276,114 +276,51 @@
 </template>
 
 <script>
-import $ from 'jquery';
 import Pagination from '@/components/Pagination.vue';
 import AlertMessage from '@/components/AlertMessage.vue';
+import { mapState } from 'vuex';
 
 export default {
   components: {
     Pagination,
     AlertMessage,
   },
-  data() {
-    return {
-      products: [],
-      tempProduct: {},
-      isNew: false,
-      isLoading: false,
-      status: {
-        fileUploading: false,
-      },
-      pagination: {},
-    };
-  },
   methods: {
     getProducts(page = 1) {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/products?page=${page}`;
-      vm.isLoading = true;
-      vm.axios.get(api).then((response) => {
-        if (response.data.success) {
-          vm.products = response.data.products;
-          vm.pagination = response.data.pagination;
-          vm.isLoading = false;
-        }
-      });
+      this.$store.dispatch('backend/getProducts', page);
     },
     openModal(isNew, item) {
-      if (isNew) {
-        this.tempProduct = {};
-        this.isNew = true;
-      } else {
-        this.tempProduct = { ...item };
-        this.isNew = false;
-      }
-      $('#productModal').modal('show');
+      this.$store.commit('backend/OPENMODAL', { isNew, item });
     },
     updateProduct() {
-      const vm = this;
-      let api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product`; // 新增商品
-      let httpMethod = 'post';
-      if (!vm.isNew) {
-        api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product/${vm.tempProduct.id}`; // 修改商品
-        httpMethod = 'put';
-      }
-      vm.axios[httpMethod](api, { data: vm.tempProduct }).then((response) => {
-        if (response.data.success) {
-          $('#productModal').modal('hide');
-          vm.getProducts();
-          vm.$bus.$emit('message:push', response.data.message, 'warning');
-        } else {
-          $('#productModal').modal('hide');
-          vm.getProducts();
-          vm.$bus.$emit('message:push', response.data.message, 'warning');
-        }
-      });
+      this.$store.dispatch('backend/updateProduct');
     },
     deleteModal(item) {
-      this.tempProduct = item;
-      $('#delProductModal').modal('show');
+      this.$store.commit('backend/DELETEMODAL', item);
     },
     deleteProduct() {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product/${vm.tempProduct.id}`;
-      vm.axios.delete(api).then((response) => {
-        if (response.data.success) {
-          $('#delProductModal').modal('hide');
-          vm.getProducts();
-          vm.$bus.$emit('message:push', response.data.message, 'warning');
-        } else {
-          $('#delProductModal').modal('hide');
-          vm.getProducts();
-          vm.$bus.$emit('message:push', response.data.message, 'warning');
-        }
-      });
+      this.$store.dispatch('backend/deleteProduct');
     },
     uploadFile() {
       const vm = this;
       const uploadFile = vm.$refs.files.files[0];
-      vm.status.fileUploading = true;
-      const formData = new FormData();
-      formData.append('file-to-upload', uploadFile);
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/upload`;
-      vm.axios
-        .post(api, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        })
-        .then((response) => {
-          vm.status.fileUploading = false;
-          if (response.data.success) {
-            vm.$set(vm.tempProduct, 'imageUrl', response.data.imageUrl);
-          } else {
-            vm.$bus.$emit('message:push', response.data.message, 'danger');
-          }
-        });
+      this.$store.dispatch('backend/uploadFile', uploadFile);
     },
   },
   created() {
     this.getProducts();
+  },
+  computed: {
+    ...mapState('backend', ['products', 'pagination', 'isNew', 'status']),
+    ...mapState(['isLoading']),
+    tempProduct: {
+      get() {
+        return this.$store.state.backend.tempProduct;
+      },
+      set(isNew, item) {
+        this.$store.commit('backend/OPENMODAL', { isNew, item });
+      },
+    },
   },
 };
 </script>

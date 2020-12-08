@@ -9,6 +9,7 @@ import 'aos/dist/aos.css';
 
 import App from './App.vue';
 import router from './router';
+import store from './store/store';
 import './bus';
 import './validate';
 import currencyFilter from './filters/currencyFilter';
@@ -44,6 +45,7 @@ router.beforeEach((to, from, next) => {
 
 new Vue({
   router,
+  store,
   created() {
     AOS.init({
       duration: 1500,

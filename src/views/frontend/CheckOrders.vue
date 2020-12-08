@@ -24,7 +24,7 @@
         </div>
       </div>
     </section>
-    <section class="container mt-3" v-if="order">
+    <section class="container mt-3" v-if="showOrder">
       <div class="row">
         <div class="col-md-7">
           <h5 class="text-primary font-weight-bolder">
@@ -36,24 +36,24 @@
               <tbody>
                 <tr>
                   <th>Email</th>
-                  <td>{{ order.user.email }}</td>
+                  <td>{{ checkOrder.user.email }}</td>
                 </tr>
                 <tr>
                   <th>姓名</th>
-                  <td>{{ order.user.name }}</td>
+                  <td>{{ checkOrder.user.name }}</td>
                 </tr>
                 <tr>
                   <th>收件人電話</th>
-                  <td>{{ order.user.tel }}</td>
+                  <td>{{ checkOrder.user.tel }}</td>
                 </tr>
                 <tr>
                   <th>收件人地址</th>
-                  <td>{{ order.user.address }}</td>
+                  <td>{{ checkOrder.user.address }}</td>
                 </tr>
                 <tr>
                   <th>付款狀況</th>
                   <td>
-                    <span v-if="!order.is_paid">尚未付款</span>
+                    <span v-if="!checkOrder.is_paid">尚未付款</span>
                     <span v-else class="text-primary">確認付款</span>
                   </td>
                 </tr>
@@ -66,7 +66,7 @@
             訂單內容
             <i class="far fa-list-alt ml-2"></i>
           </h5>
-          <div class="row" v-for="item in order.products" :key="item.id">
+          <div class="row" v-for="item in checkOrder.products" :key="item.id">
             <div class="col-3 mb-3">
               <div class="img">
                 <img
@@ -86,7 +86,7 @@
           <hr />
           <div>
             <h3 class="text-right text-primary">
-              總計{{ order.total | currencyFilter }}
+              總計{{ checkOrder.total | currencyFilter }}
             </h3>
           </div>
         </div>
@@ -95,27 +95,24 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex';
+
 export default {
-  data() {
-    return {
-      order: {},
-      id: '',
-      isLoading: false,
-    };
-  },
   methods: {
     checkorder(id) {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/order/${id}`;
-      vm.isLoading = true;
-      vm.axios.get(api).then((response) => {
-        vm.order = response.data.order;
-        vm.isLoading = false;
-      });
+      this.$store.dispatch('checkorder', id);
     },
   },
-  created() {
-    this.checkorder();
+  computed: {
+    ...mapState(['checkOrder', 'isLoading', 'showOrder']),
+    id: {
+      get() {
+        return this.$store.state.checkId;
+      },
+      set(val) {
+        this.$store.commit('CHECKID', val);
+      },
+    },
   },
 };
 </script>

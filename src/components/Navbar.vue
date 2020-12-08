@@ -30,13 +30,7 @@
 export default {
   methods: {
     logout() {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/logout`;
-      vm.axios.post(api).then((response) => {
-        if (response.data.success) {
-          vm.$router.push('/login');
-        }
-      });
+      this.$store.dispatch('logout');
     },
   },
 };

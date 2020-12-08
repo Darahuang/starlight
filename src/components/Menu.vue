@@ -2,7 +2,9 @@
   <div class="sticky-top">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container">
-        <router-link class="navbar-brand box-shadow bg-transparent logo text-primary" to="/"
+        <router-link
+          class="navbar-brand box-shadow bg-transparent logo text-primary"
+          to="/"
           >Starlight</router-link
         >
         <button
@@ -42,12 +44,68 @@
                 >查看訂單</router-link
               >
             </li>
-            <li class="nav-item ml-lg-auto ml-1">
-              <router-link to="/login" class="nav-link text-secondary h5">
-                <i class="fas fa-cog"></i>
-              </router-link>
+            <li class="nav-item mr-2 ml-lg-auto">
+              <div class="dropdown">
+                <a
+                  class="nav-link text-secondary h5"
+                  href="#"
+                  role="button"
+                  id="fav"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <i class="fas fa-heart"></i>
+                  <span  class="badge badge-danger badge-position" v-if="collected.length">{{
+                    collected.length
+                  }}</span>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="fav">
+                  <div class="table-responsive p-3 font-size" v-if="collected.length!==0">
+                    <h6>收藏清單</h6>
+                    <table class="table table-hover width">
+                      <tbody>
+                        <tr v-for="(item, index) in collected" :key="index">
+                          <td class="align-middle" width="20%">
+                            <button
+                              type="button"
+                              class="btn btn-outline-danger btn-sm"
+                              @click="deleteFavItem(item.id)"
+                            >
+                              <i class="far fa-trash-alt"></i>
+                            </button>
+                          </td>
+                          <td class="align-middle">
+                            {{ item.title }}
+                          </td>
+                          <td></td>
+                          <td>
+                            <a
+                              href="#"
+                              class="d-block"
+                              @click.prevent="addtoCart(item.id, (qty = 1))"
+                            >
+                              <i class="fas fa-shopping-cart fa-2x"></i>
+                            </a>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="width p-3" v-else>
+                    <div class="text-center">
+                      <h6 class="text-primary">您的收藏清單目前是空的</h6>
+                      <router-link
+                        to="/customer_orders"
+                        class="btn btn-heavy btn-sm"
+                        >繼續逛逛</router-link
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
             </li>
-            <li class="nav-item">
+            <li class="nav-item mr-2">
               <div class="dropdown">
                 <a
                   class="nav-link text-secondary h5 text-center"
@@ -59,9 +117,9 @@
                   aria-expanded="false"
                 >
                   <i class="fas fa-shopping-cart"></i>
-                  <span class="badge badge-danger">{{
-                    number
-                  }}</span>
+                  <span v-if="cart.carts.length" class="badge badge-danger badge-position">
+                    {{ cart.carts.length }}</span
+                  >
                 </a>
                 <div class="dropdown-menu" aria-labelledby="cart">
                   <div
@@ -74,9 +132,6 @@
                         <tr v-for="item in cart.carts" :key="item.id">
                           <td class="align-middle">
                             {{ item.product.title }}
-                            <div class="text-success" v-if="item.coupon">
-                              已套用折扣碼
-                            </div>
                           </td>
                           <td class="align-middle" width="20%">
                             {{ item.qty }}{{ item.product.unit }}
@@ -107,7 +162,9 @@
                         </tr>
                       </tfoot>
                     </table>
-                    <router-link to="checkout" class="btn btn-block btn-primary"
+                    <router-link
+                      to="/checkout"
+                      class="btn btn-block btn-primary"
                       >結帳去</router-link
                     >
                   </div>
@@ -115,7 +172,7 @@
                     <div class="text-center">
                       <h6 class="text-primary">您的購物車目前是空的</h6>
                       <router-link
-                        to="customer_orders"
+                        to="/customer_orders"
                         class="btn btn-heavy btn-sm"
                         >繼續逛逛</router-link
                       >
@@ -124,6 +181,11 @@
                 </div>
               </div>
             </li>
+            <li class="nav-item  ml-1">
+              <router-link to="/login" class="nav-link text-secondary h5">
+                <i class="fas fa-cog"></i>
+              </router-link>
+            </li>
           </ul>
         </div>
       </div>
@@ -131,59 +193,52 @@
   </div>
 </template>
 <script>
+import { mapState } from 'vuex';
+
 export default {
-  data() {
-    return {
-      number: '',
-      cart: {},
-      products: [],
-    };
-  },
   methods: {
-    updateCart(number) {
-      this.number = number;
-    },
-    getCart() {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`;
-      vm.axios.get(api).then((response) => {
-        vm.cart = response.data.data;
-        vm.number = response.data.data.carts.length;
-      });
-    },
     deleteCartItem(id) {
+      this.$store.dispatch('deleteCartItem', id);
+    },
+    deleteFavItem(id) {
+      this.$store.dispatch('deleteFavItem', id);
+    },
+    addtoCart(id, qty = 1) {
       const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart/${id}`;
-      vm.axios.delete(api).then((response) => {
-        vm.getCart();
-        vm.$bus.$emit('message:push', response.data.message, 'warning');
-      });
+      const target = vm.cart.carts.filter((items) => items.product_id === id); // 過濾是否有相同產品重覆加入購物車
+      if (target.length > 0) {
+        const sameCartItem = target[0];
+        const originCartId = sameCartItem.id; // 購物車id
+        const orginQty = sameCartItem.qty;
+        const newQty = orginQty + qty;
+        const originProductId = sameCartItem.product.id; // 產品id
+        vm.$store.dispatch('updateQty', { originCartId, originProductId, newQty });
+      } else {
+        vm.$store.dispatch('addToCart', { id, qty });
+      }
     },
   },
-  created() {
-    const vm = this;
-    vm.$bus.$on('cart', (number) => {
-      vm.updateCart(number);
-      vm.getCart();
-    });
-    vm.getCart();
+  computed: {
+    ...mapState(['cart', 'collected']),
   },
 };
 </script>
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap");
 .icon {
   position: relative;
 }
-.badge {
+.badge-position {
   position: absolute;
-  top: -6px;
+  top: -8px;
+  right: -10px;
 }
 .box-shadow {
   box-shadow: none;
 }
 
-.nav-link:focus, .nav-link:hover {
+.nav-link:focus,
+.nav-link:hover {
   background-color: #cbe2d4a8;
 }
 .width {
@@ -193,9 +248,8 @@ export default {
   font-size: 10px;
 }
 .logo {
-  font-family: 'Caveat', cursive;
+  font-family: "Caveat", cursive;
   font-size: 30px;
-  padding:0
+  padding: 0;
 }
-
 </style>

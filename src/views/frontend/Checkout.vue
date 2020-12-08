@@ -1,6 +1,6 @@
 <template>
   <div>
-    <CheckoutStep :total="cart.total"></CheckoutStep>
+    <CheckoutStep  :total="cart.total"></CheckoutStep>
     <loading :active.sync="isLoading"></loading>
     <div class="container">
       <div class="my-4 row justify-content-center" v-if="cart.total !== 0">
@@ -157,7 +157,7 @@
                 class="form-control"
                 name="email"
                 id="email"
-                v-model="form.user.email"
+                v-model.lazy="form.user.email"
                 placeholder="請輸入Email"
                 v-validate="'required|email'"
                 :class="{ 'is-invalid': errors.has('email') }"
@@ -173,7 +173,7 @@
                 class="form-control"
                 name="name"
                 id="name"
-                v-model="form.user.name"
+                v-model.lazy="form.user.name"
                 placeholder="請輸入姓名"
                 v-validate="'required'"
                 :class="{ 'is-invalid': errors.has('name') }"
@@ -189,7 +189,7 @@
                 class="form-control"
                 name="tel"
                 id="tel"
-                v-model="form.user.tel"
+                v-model.lazy="form.user.tel"
                 placeholder="請輸入電話"
                 v-validate="'required|myPhone'"
                 :class="{ 'is-invalid': errors.has('tel') }"
@@ -205,7 +205,7 @@
                 class="form-control"
                 name="address"
                 id="address"
-                v-model="form.user.address"
+                v-model.lazy="form.user.address"
                 placeholder="請輸入地址"
                 v-validate="'required'"
                 :class="{ 'is-invalid': errors.has('name') }"
@@ -222,29 +222,29 @@
                 cols="5"
                 rows="5"
                 class="form-control"
-                v-model="form.message"
+                v-model.lazy="form.message"
               ></textarea>
             </div>
             <div class="d-flex justify-content-between mt-4">
               <button
                 class="btn btn-outline-primary"
                 type="button"
-                @click="backtoCart"
+                @click="back"
               >
-                返回購物車
+               回到上一頁
               </button>
               <button class="btn btn-primary">送出訂單</button>
             </div>
           </form>
         </div>
       </div>
-      <div v-else class="row justify-content-center my-5">
-        <div class="col-md-8 text-center">
-          <p class="text-success font-weight-bolder h6">
+      <div v-else class="row my-5">
+        <div class="col-md-12 text-center bg-height bg-cover row justify-content-start align-items-center" style="background-image:url(https://images.unsplash.com/photo-1557821552-17105176677c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1489&q=80)">
+          <p class="text-primary font-weight-bolder ml-5 h6">
             您的購物車內還沒有任何商品！
             <button
               type="button"
-              class="btn btn-warning"
+              class="btn btn-accent"
               @click="toCustomerOrders"
             >
               繼續逛逛
@@ -257,6 +257,7 @@
 </template>
 <script>
 import CheckoutStep from '@/components/CheckoutStep.vue';
+import { mapState } from 'vuex';
 
 export default {
   components: {
@@ -264,11 +265,6 @@ export default {
   },
   data() {
     return {
-      cart: {},
-      isLoading: false,
-      num: 6,
-      coupon_code: '',
-      cartNumber: '',
       form: {
         user: {
           name: '',
@@ -282,20 +278,11 @@ export default {
   },
   methods: {
     getCart() {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`;
-      vm.isLoading = true;
-      vm.axios.get(api).then((response) => {
-        vm.cart = response.data.data;
-        vm.num = response.data.data.qty;
-        vm.cartNumber = response.data.data.carts.qty;
-        vm.isLoading = false;
-        vm.$bus.$emit('cart', vm.cartNumber);
-      });
+      this.$store.dispatch('getCart');
     },
-    backtoCart() {
+    back() {
       const vm = this;
-      vm.$router.push('/cart');
+      vm.$router.back();
     },
     createOrder() {
       const vm = this;
@@ -311,62 +298,45 @@ export default {
       });
     },
     deleteCartItem(id) {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart/${id}`;
-      vm.axios.delete(api).then(() => {
-        vm.getCart();
-      });
+      this.$store.dispatch('deleteCartItem', id);
     },
     toCustomerOrders() {
       const vm = this;
       vm.$router.push('/customer_orders');
     },
-    changeQty(id, productId, qty, isTrue) {
+    changeQty(originCartId, originProductId, qty, isTrue) {
       const vm = this;
-      vm.isLoading = true;
-      let num;
+      // this.$store.commit('LOADING', true);
+      let newQty;
       if (isTrue === true) {
         // 如果為true,數量+1
-        num = qty + 1;
+        newQty = qty + 1;
       } else if (qty === 1) {
         // 數量最小值為1
-        num = 1;
+        newQty = 1;
       } else {
-        num = qty - 1; // 如果為false,數量-1
+        newQty = qty - 1; // 如果為false,數量-1
       }
-      const delAPI = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart/${id}`;
-      const addAPI = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`;
-      const changeCart = {
-        product_id: productId,
-        qty: num,
-      };
-      vm.axios
-        .all([
-          // 把原有的購物車刪掉,並重新把新的購物車資料傳送到加入購物車的API,再重新取得購物車列表
-          vm.axios.delete(delAPI),
-          vm.axios.post(addAPI, { data: changeCart }),
-        ])
-        .then(
-          vm.axios.spread(() => {
-            vm.getCart();
-            vm.isLoading = false;
-          }),
-        );
+      vm.$store.dispatch('updateQty', { originCartId, originProductId, newQty });
     },
     addCouponCode() {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/coupon`;
-      const coupon = { code: vm.coupon_code };
-      vm.axios.post(api, { data: coupon }).then((response) => {
-        vm.coupon_code = '';
-        vm.getCart();
-        vm.$bus.$emit('message:push', response.data.message, 'warning');
-      });
+      this.$store.dispatch('addCouponCode');
     },
   },
   created() {
     const vm = this;
     vm.getCart();
+  },
+  computed: {
+    ...mapState(['cart', 'isLoading']),
+    coupon_code: {
+      get() {
+        return this.$store.state.coupon_code;
+      },
+      set(val) {
+        this.$store.commit('COUPON', val);
+      },
+    },
   },
 };
 </script>
@@ -378,5 +348,12 @@ export default {
 .qty-input {
   width: 45px;
   border-radius: 0px;
+}
+.bg-cover {
+  background-size: cover;
+  background-position: top center;
+}
+.bg-height{
+  height: 400px;
 }
 </style>

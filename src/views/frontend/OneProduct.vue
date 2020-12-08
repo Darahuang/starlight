@@ -44,9 +44,12 @@
               <button
                 class="btn btn-outline-primary mr-3"
                 type="button"
-                @click="back"
+                :disabled="checkFavStatus(oneProduct)"
+                @click="checkFavList(oneProduct.id)"
               >
-                上一頁
+                <i class="fas fa-heart  text-danger"></i>
+                <span v-if="!checkFavStatus(oneProduct)" class="ml-1">加入收藏</span>
+                <span v-else class="ml-1">已加入收藏</span>
               </button>
               <button
                 class="btn btn-primary"
@@ -54,7 +57,8 @@
                 @click="addtoCart(oneProduct.id, num)"
                 :disabled="disable"
               >
-                加到購物車
+                <i class="fas fa-shopping-cart "></i>
+                <span class="ml-1">加入購物車</span>
               </button>
             </div>
           </div>
@@ -177,126 +181,81 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   data() {
     return {
-      id: this.$route.params.id,
+      id: '',
       num: 1,
-      products: [],
-      isLoading: false,
-      visibility: '所有餐點',
-      cartNumber: '',
-      pagination: {},
-      oneProduct: {},
-      status: {
-        loadingItem: '',
-      },
-      cart: {},
-      form: {
-        user: {
-          name: '',
-          email: '',
-          tel: '',
-          address: '',
-        },
-        message: '',
-      },
-      disable: false,
     };
   },
   methods: {
     getOneProduct(id) {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/product/${id}`;
-      vm.status.loadingItem = id;
-      vm.axios.get(api).then((response) => {
-        vm.oneProduct = response.data.product;
-        vm.$router.push(`/customer_orders/${id}`);
-        vm.status.loadingItem = '';
-      });
+      this.$store.dispatch('getOneProduct', id);
     },
     addtoCart(id, qty = 1) {
       const vm = this;
-      const target = vm.cart.carts.filter((items) => items.product_id === id);
+      const target = vm.cart.carts.filter((items) => items.product_id === id); // 過濾是否有相同產品重覆加入購物車
       if (target.length > 0) {
-        const sameCartItem = target[0];
-        const originCartId = sameCartItem.id;
-        const orginQty = sameCartItem.qty;
+        const previousCart = target[0]; // 原先的購物車
+        const originCartId = previousCart.id; // 原先的購物車id
+        const orginQty = previousCart.qty;
         const newQty = orginQty + qty;
-        const originProductId = sameCartItem.product.id;
-        const delAPI = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart/${originCartId}`;
-        const addAPI = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`;
-        const changeCart = {
-          product_id: originProductId,
-          qty: newQty,
-        };
-        vm.disable = true;
-        vm.isLoading = true;
-        vm.axios
-          .all([
-            vm.axios.delete(delAPI),
-            vm.axios.post(addAPI, { data: changeCart }),
-          ])
-          .then(
-            vm.axios.spread(() => {
-              vm.getCart();
-              vm.isLoading = false;
-              vm.disable = true;
-            }),
-          );
+        const originProductId = previousCart.product.id; // 產品id
+        vm.$store.dispatch('updateQty', { originCartId, originProductId, newQty });
       } else {
-        const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`;
-        vm.isLoading = true;
-        const cart = {
-          product_id: id,
-          qty,
-        };
-        vm.axios.post(api, { data: cart }).then((response) => {
-          vm.isLoading = false;
-          vm.getCart();
-          vm.$bus.$emit('message:push', response.data.message, 'warning');
-        });
+        vm.$store.dispatch('addToCart', { id, qty });
       }
     },
     getCart() {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`;
-      vm.isLoading = true;
-      vm.axios.get(api).then((response) => {
-        vm.cart = response.data.data;
-        vm.cartNumber = response.data.data.carts.length;
-        vm.isLoading = false;
-        vm.$bus.$emit('cart', vm.cartNumber);
-      });
+      this.$store.dispatch('getCart');
     },
-    back() {
-      const vm = this;
-      vm.$router.back();
+    getAllProducts() {
+      this.$store.dispatch('getAllProducts');
     },
-    getProducts() {
+    checkFavList(id) {
       const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products/all`;
-      vm.axios.get(api).then((response) => {
-        vm.products = response.data.products;
-      });
+      const favItem = vm.allProducts.find((item) => item.id === id);
+      if (!vm.collected.find((item) => item.id === id)) {
+        vm.collected.push(favItem);
+        const message = `${favItem.title} 加入收藏清單中!`;
+        const status = 'warning';
+        this.$store.dispatch('updateMessage', { message, status });
+      }
+      localStorage.setItem('collectedItems', JSON.stringify(vm.collected));
     },
+    checkFavStatus(item) {
+      const vm = this;
+      if (vm.collected === null) {
+        vm.collected = [];
+      }
+      if (vm.collected.find((el) => el.id === item.id)) {
+        return true;
+      }
+      return false;
+    },
+
   },
   created() {
-    this.getCart();
-    this.getProducts();
+    this.id = this.$route.params.id;
     this.getOneProduct(this.id);
+    this.getCart();
+    this.getAllProducts();
   },
   computed: {
+    ...mapState(['oneProduct', 'cart', 'allProducts', 'disable', 'isLoading', 'collected']),
     relatedCategory() {
       const vm = this;
       let relatedItem = [];
-      relatedItem = vm.products.filter(
+      relatedItem = vm.allProducts.filter(
         (item) => item.title !== vm.oneProduct.title
           && item.category === vm.oneProduct.category,
       );
       relatedItem.sort(() => Math.random() - 0.5);
       return relatedItem;
     },
+
   },
 };
 </script>

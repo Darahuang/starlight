@@ -64,7 +64,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <h5 class="modal-title" id="exampleModalLabel">編輯優惠券</h5>
             <button
               type="button"
               class="close"
@@ -81,7 +81,7 @@
                 type="text"
                 id="title"
                 class="form-control"
-                v-model="tempCoupon.title"
+                v-model="title"
                 placeholder="請輸入名稱"
               />
             </div>
@@ -91,7 +91,7 @@
                 type="text"
                 id="code"
                 class="form-control"
-                v-model="tempCoupon.code"
+                v-model="code"
                 placeholder="請輸入優惠碼"
               />
             </div>
@@ -110,7 +110,7 @@
                 type="number"
                 id="percent"
                 class="form-control"
-                v-model="tempCoupon.percent"
+                v-model="percent"
                 placeholder="請輸入折扣百分比"
               />
             </div>
@@ -122,7 +122,7 @@
                   class="form-check-input"
                   :true-value="1"
                   :false-value="0"
-                  v-model="tempCoupon.is_enabled"
+                  v-model="is_enabled"
                 />
                 <label for="is_enabled" class="form-check-label"
                   >是否啟用</label
@@ -183,7 +183,7 @@
             >
               取消
             </button>
-            <button type="button" class="btn btn-danger" @click="deleteCoupon">
+            <button type="button" class="btn btn-danger" @click="deleteCoupon(tempCoupon)">
               確認刪除
             </button>
           </div>
@@ -194,95 +194,75 @@
 </template>
 
 <script>
-import $ from 'jquery';
 import AlertMessage from '@/components/AlertMessage.vue';
+import { mapState } from 'vuex';
 
 export default {
   components: {
     AlertMessage,
   },
-  data() {
-    return {
-      coupons: [],
-      tempCoupon: {},
-      isNew: false,
-      due_date: new Date(),
-      isLoading: false,
-    };
-  },
   methods: {
     getCoupons() {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupons`;
-      vm.isLoading = true;
-      vm.axios.get(api).then((response) => {
-        vm.coupons = response.data.coupons;
-        vm.isLoading = false;
-      });
+      this.$store.dispatch('coupons/getCoupons');
     },
     openCouponModal(isNew, item) {
-      const vm = this;
-      if (isNew) {
-        vm.tempCoupon = {};
-        vm.isNew = true;
-      } else {
-        vm.tempCoupon = { ...item };
-        vm.isNew = false;
-        const dateAndTime = new Date(vm.tempCoupon.due_date * 1000)
-          .toISOString()
-          .split('T');
-        const index = 0;
-        vm.due_date = dateAndTime[index];
-      }
-      $('#couponModal').modal('show');
+      this.$store.commit('coupons/OPENCOUPONMODAL', { isNew, item });
     },
     updateCoupon() {
-      const vm = this;
-      if (vm.isNew) {
-        const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon`;
-        vm.axios.post(api, { data: vm.tempCoupon }).then((response) => {
-          $('#couponModal').modal('hide');
-          vm.getCoupons();
-          vm.$bus.$emit('message:push', response.data.message, 'warning');
-        });
-      } else {
-        const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon/${vm.tempCoupon.id}`;
-        vm.due_date = new Date(vm.tempCoupon.due_date * 1000);
-        vm.axios.put(api, { data: vm.tempCoupon }).then((response) => {
-          $('#couponModal').modal('hide');
-          vm.getCoupons();
-          vm.$bus.$emit('message:push', response.data.message, 'warning');
-        });
-      }
+      this.$store.dispatch('coupons/updateCoupon');
     },
     deleteCouponModal(item) {
-      this.tempCoupon = item;
-      $('#delCouponModal').modal('show');
+      this.$store.commit('coupons/DELETECOUPONMODAL', item);
     },
     deleteCoupon() {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon/${vm.tempCoupon.id}`;
-      vm.axios.delete(api).then((response) => {
-        if (response.data.success) {
-          $('#delCouponModal').modal('hide');
-          vm.getCoupons();
-          vm.$bus.$emit('message:push', response.data.message, 'warning');
-        } else {
-          $('#delCouponModal').modal('hide');
-          vm.getCoupons();
-          vm.$bus.$emit('message:push', response.data.message, 'warning');
-        }
-      });
+      this.$store.dispatch('coupons/deleteCoupon');
     },
   },
   created() {
     this.getCoupons();
   },
-  watch: {
-    due_date() {
-      const vm = this;
-      const timestamp = Math.floor(new Date(vm.due_date) / 1000);
-      vm.tempCoupon.due_date = timestamp; // due_date 轉換成 Unix Timestamp 格式
+  computed: {
+    ...mapState('coupons', ['coupons', 'isNew', 'tempCoupon']),
+    ...mapState(['isLoading']),
+    title: {
+      get() {
+        return this.$store.state.coupons.tempCoupon.title;
+      },
+      set(val) {
+        this.$store.commit('coupons/UPDATETITLE', val);
+      },
+    },
+    code: {
+      get() {
+        return this.$store.state.coupons.tempCoupon.code;
+      },
+      set(val) {
+        this.$store.commit('coupons/UPDATECODE', val);
+      },
+    },
+    percent: {
+      get() {
+        return this.$store.state.coupons.tempCoupon.percent;
+      },
+      set(val) {
+        this.$store.commit('coupons/UPDATEPERCENT', val);
+      },
+    },
+    is_enabled: {
+      get() {
+        return this.$store.state.coupons.tempCoupon.is_enabled;
+      },
+      set(val) {
+        this.$store.commit('coupons/UPDATEENABLE', val);
+      },
+    },
+    due_date: {
+      get() {
+        return this.$store.state.coupons.due_date;
+      },
+      set(val) {
+        this.$store.commit('coupons/DUEDATE', val);
+      },
     },
   },
 };

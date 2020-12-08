@@ -1,6 +1,7 @@
 <template>
   <div>
     <Header></Header>
+    <loading :active.sync="isLoading"></loading>
     <section class="text-primary">
       <div class="container bg-slight py-5 my-5">
         <div class="row">
@@ -279,7 +280,7 @@
                     name="email"
                     v-validate="'required|email'"
                     :class="{ 'is-invalid': errors.has('email') }"
-                    v-model="email"
+                    v-model.lazy="email"
                   />
                   <button
                     class="btn btn-accent rounded-0 d-flex align-items-center"
@@ -301,7 +302,7 @@
         </div>
       </div>
     </section>
-    <section class="container mt-5">
+    <section class="container mt-5" data-aos="fade-up">
       <div class="row">
         <div class="col-md-4">
           <router-link to="/about">
@@ -362,6 +363,7 @@
 <script>
 import Header from '@/components/Header.vue';
 import Swiper from '@/components/Swiper.vue';
+import { mapState } from 'vuex';
 
 export default {
   components: {
@@ -371,101 +373,53 @@ export default {
   data() {
     return {
       email: '',
-      products: [],
-      category: '所有餐點',
-      localStorageData: JSON.parse(localStorage.getItem('favItems')) || [],
-      disable: false,
     };
   },
   methods: {
     subscribe() {
-      this.$validator.validate().then((result) => {
+      const vm = this;
+      vm.$validator.validate().then((result) => {
         if (result) {
-          this.$bus.$emit('message:push', '訂閱成功', 'warning');
+          const message = '訂閱成功';
+          const status = 'warning';
+          vm.$store.dispatch('updateMessage', { message, status });
         } else {
-          this.$bus.$emit('message:push', '訂閱失敗', 'danger');
+          const message = '訂閱失敗';
+          const status = 'warning';
+          vm.$store.dispatch('updateMessage', { message, status });
         }
       });
     },
     getCart() {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`;
-      vm.isLoading = true;
-      vm.axios.get(api).then((response) => {
-        vm.cart = response.data.data;
-        vm.cartNumber = response.data.data.carts.length;
-        vm.isLoading = false;
-        vm.$bus.$emit('cart', vm.cartNumber);
-      });
+      this.$store.dispatch('getCart');
     },
     addtoCart(id, qty = 1) {
       const vm = this;
       const target = vm.cart.carts.filter((items) => items.product_id === id); // 過濾是否有相同產品重覆加入購物車
       if (target.length > 0) {
-        const sameCartItem = target[0];
-        const originCartId = sameCartItem.id; // 購物車id
-        const orginQty = sameCartItem.qty;
+        const previousCart = target[0]; // 原先的購物車
+        const originCartId = previousCart.id; // 原先的購物車id
+        const orginQty = previousCart.qty;
         const newQty = orginQty + qty;
-        const originProductId = sameCartItem.product.id; // 產品id
-        const delAPI = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart/${originCartId}`;
-        const addAPI = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`;
-        const changeCart = {
-          product_id: originProductId,
-          qty: newQty,
-        };
-        vm.isLoading = true;
-        vm.disable = true;
-        vm.axios // 首先移除加入購物車的單筆商品,並將重覆加入的商品合併數量後再傳送到加入購物車的API,再重新取得購物車列表
-          .all([
-            vm.axios.delete(delAPI),
-            vm.axios.post(addAPI, { data: changeCart }),
-          ])
-          .then(
-            vm.axios.spread(() => {
-              vm.getCart();
-              vm.isLoading = false;
-              vm.disable = false;
-              vm.$bus.$emit('message:push', '已加入購物車', 'warning');
-            }),
-          );
+        const originProductId = previousCart.product.id; // 產品id
+        vm.$store.dispatch('updateQty', { originCartId, originProductId, newQty });
       } else {
-        const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/cart`;
-        vm.isLoading = true;
-        const cart = {
-          product_id: id,
-          qty,
-        };
-        vm.axios.post(api, { data: cart }).then((response) => {
-          vm.isLoading = false;
-          vm.getCart();
-          vm.$bus.$emit('message:push', response.data.message, 'warning');
-        });
+        vm.$store.dispatch('addToCart', { id, qty });
       }
     },
     getProducts(page = 3) {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/products?page=${page}`;
-      vm.isLoading = true;
-      vm.axios.get(api).then((response) => {
-        vm.products = response.data.products;
-        vm.isLoading = false;
-        vm.products.forEach((el) => {
-          vm.$set(el, 'favItem', false);
-        });
-      });
+      this.$store.dispatch('getProducts', page);
     },
     getOneProduct(id) {
-      const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/product/${id}`;
-      vm.axios.get(api).then((response) => {
-        vm.oneProduct = response.data.product;
-        vm.$router.push(`/customer_orders/${id}`);
-      });
+      this.$store.dispatch('getOneProduct', id);
     },
   },
   created() {
     this.getCart();
     this.getProducts();
+  },
+  computed: {
+    ...mapState(['isLoading', 'cart', 'products', 'disable']),
   },
 };
 </script>

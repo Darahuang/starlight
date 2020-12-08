@@ -1,8 +1,5 @@
 <template>
   <div>
-    <button class="btn  float-right margin" id="gotopBtn" @click="gotop">
-      <i class="fas fa-arrow-alt-circle-up fa-2x"></i>
-    </button>
     <footer>
       <div class="bg-white mt-5  footer-height">
         <div class="text-center text-deep">
@@ -44,12 +41,7 @@
   </div>
 </template>
 <style scoped>
-.btn:hover, .btn:focus{
-  color:#f0d22c ;
-}
-.margin{
-  margin-right: 250px;
-}
+
 .instagram {
   color: transparent;
   background: radial-gradient(
@@ -74,24 +66,8 @@
 </style>
 
 <script>
-import $ from 'jquery';
 
 export default {
-  methods: {
-    gotop() {
-      $('html, body').animate({ scrollTop: 0 }, 1500);
-    },
-  },
-  created() {
-    // 偵測頁面往下滑超過 400px 就讓 Gotop 按鈕出現
-    function showBtnCondition() {
-      if ($(this).scrollTop() > 400) {
-        $('#gotopBtn').fadeIn();
-      } else {
-        $('#gotopBtn').fadeOut();
-      }
-    }
-    $(window).scroll(showBtnCondition);
-  },
+
 };
 </script>
