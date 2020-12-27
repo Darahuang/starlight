@@ -4,7 +4,12 @@
       <Menu></Menu>
       <AlertMessage></AlertMessage>
       <router-view></router-view>
-      <button class="btn float-right" id="gotopBtn" @click="gotop">
+      <button
+        class="btn position-fixed"
+        id="gotopBtn"
+        style="bottom: 0px; right: 0px; display: none"
+        @click="gotop"
+      >
         <i class="fas fa-arrow-alt-circle-up fa-2x"></i>
       </button>
     </div>
