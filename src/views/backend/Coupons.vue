@@ -81,8 +81,8 @@
                 type="text"
                 id="title"
                 class="form-control"
-                v-model="title"
                 placeholder="請輸入名稱"
+                v-model="copyTempCoupon.title"
               />
             </div>
             <div class="form-group">
@@ -91,8 +91,8 @@
                 type="text"
                 id="code"
                 class="form-control"
-                v-model="code"
                 placeholder="請輸入優惠碼"
+                v-model="copyTempCoupon.code"
               />
             </div>
             <div class="form-group">
@@ -110,8 +110,8 @@
                 type="number"
                 id="percent"
                 class="form-control"
-                v-model="percent"
                 placeholder="請輸入折扣百分比"
+                v-model="copyTempCoupon.percent"
               />
             </div>
             <div class="form-group">
@@ -122,7 +122,7 @@
                   class="form-check-input"
                   :true-value="1"
                   :false-value="0"
-                  v-model="is_enabled"
+                  v-model="copyTempCoupon.is_enabled"
                 />
                 <label for="is_enabled" class="form-check-label"
                   >是否啟用</label
@@ -138,7 +138,7 @@
             >
               Close
             </button>
-            <button type="button" class="btn btn-primary" @click="updateCoupon">
+            <button type="button" class="btn btn-primary" @click="updateCoupon(copyTempCoupon, due_date)">
               更新優惠券
             </button>
           </div>
@@ -172,7 +172,7 @@
           </div>
           <div class="modal-body">
             是否刪除
-            <strong class="text-danger">{{ tempCoupon.title }}</strong>
+            <strong class="text-danger">{{ copyTempCoupon.title }}</strong>
             (刪除後將無法恢復)。
           </div>
           <div class="modal-footer">
@@ -183,7 +183,7 @@
             >
               取消
             </button>
-            <button type="button" class="btn btn-danger" @click="deleteCoupon(tempCoupon)">
+            <button type="button" class="btn btn-danger" @click="deleteCoupon">
               確認刪除
             </button>
           </div>
@@ -201,6 +201,11 @@ export default {
   components: {
     AlertMessage,
   },
+  // data() {
+  //   return {
+  //     due_date: new Date(),
+  //   };
+  // },
   methods: {
     getCoupons() {
       this.$store.dispatch('coupons/getCoupons');
@@ -208,8 +213,10 @@ export default {
     openCouponModal(isNew, item) {
       this.$store.commit('coupons/OPENCOUPONMODAL', { isNew, item });
     },
-    updateCoupon() {
-      this.$store.dispatch('coupons/updateCoupon');
+    updateCoupon(item, duedate) {
+      const updatedCoupon = item;
+      updatedCoupon.due_date = Math.floor(new Date(duedate) / 1000);
+      this.$store.dispatch('coupons/updateCoupon', updatedCoupon);
     },
     deleteCouponModal(item) {
       this.$store.commit('coupons/DELETECOUPONMODAL', item);
@@ -222,39 +229,10 @@ export default {
     this.getCoupons();
   },
   computed: {
-    ...mapState('coupons', ['coupons', 'isNew', 'tempCoupon']),
+    ...mapState('coupons', ['coupons', 'isNew', 'tempCoupon', 'due_date']),
     ...mapState(['isLoading']),
-    title: {
-      get() {
-        return this.$store.state.coupons.tempCoupon.title;
-      },
-      set(val) {
-        this.$store.commit('coupons/UPDATETITLE', val);
-      },
-    },
-    code: {
-      get() {
-        return this.$store.state.coupons.tempCoupon.code;
-      },
-      set(val) {
-        this.$store.commit('coupons/UPDATECODE', val);
-      },
-    },
-    percent: {
-      get() {
-        return this.$store.state.coupons.tempCoupon.percent;
-      },
-      set(val) {
-        this.$store.commit('coupons/UPDATEPERCENT', val);
-      },
-    },
-    is_enabled: {
-      get() {
-        return this.$store.state.coupons.tempCoupon.is_enabled;
-      },
-      set(val) {
-        this.$store.commit('coupons/UPDATEENABLE', val);
-      },
+    copyTempCoupon() {
+      return { ...this.tempCoupon };
     },
     due_date: {
       get() {
@@ -264,6 +242,7 @@ export default {
         this.$store.commit('coupons/DUEDATE', val);
       },
     },
+
   },
 };
 </script>

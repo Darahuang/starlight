@@ -82,7 +82,7 @@
                 class="form-control"
                 name="name"
                 id="name"
-                v-model="tempOrder.user.name"
+                v-model="copyTempOrder.user.name"
                 placeholder="請輸入姓名"
                 v-validate="'required'"
                 :class="{ 'is-invalid': errors.has('name') }"
@@ -98,7 +98,7 @@
                 class="form-control"
                 name="email"
                 id="email"
-                v-model="tempOrder.user.email"
+                v-model="copyTempOrder.user.email"
                 placeholder="請輸入Email"
                 v-validate="'required|email'"
                 :class="{ 'is-invalid': errors.has('email') }"
@@ -114,7 +114,7 @@
                 class="form-control"
                 name="tel"
                 id="tel"
-                v-model="tempOrder.user.tel"
+                v-model="copyTempOrder.user.tel"
                 placeholder="請輸入電話"
                 v-validate="'required|myPhone'"
                 :class="{ 'is-invalid': errors.has('tel') }"
@@ -130,7 +130,7 @@
                 class="form-control"
                 name="address"
                 id="address"
-                v-model="tempOrder.user.address"
+                v-model="copyTempOrder.user.address"
                 placeholder="請輸入地址"
                 v-validate="'required'"
                 :class="{ 'is-invalid': errors.has('name') }"
@@ -146,21 +146,21 @@
                 class="form-control"
                 id="address"
                 placeholder="請輸入標題"
-                v-model="tempOrder.total"
+                v-model="copyTempOrder.total"
               />
             </div>
             <div class="form-group">
               <label for="is_paid">付款狀態:</label>
-              <span v-if="tempOrder.is_paid">已付款</span>
+              <span v-if="copyTempOrder.is_paid">已付款</span>
               <div
-                v-if="!tempOrder.is_paid"
+                v-if="!copyTempOrder.is_paid"
                 class="form-check form-check-inline"
               >
                 <input
                   type="checkbox"
                   class="form-check-input"
                   id="is_paid"
-                  v-model="tempOrder.is_paid"
+                  v-model="copyTempOrder.is_paid"
                   :true-value="1"
                   :false-value="0"
                 />
@@ -176,7 +176,7 @@
             >
               取消
             </button>
-            <button type="button" class="btn btn-primary" @click="updateOrder">
+            <button type="button" class="btn btn-primary" @click="updateOrder(copyTempOrder)">
               確認
             </button>
           </div>
@@ -204,12 +204,12 @@ export default {
     openOrderModal(item) {
       this.$store.commit('backend/OPENORDERMODAL', item);
     },
-    updateOrder() {
+    updateOrder(item) {
       const vm = this;
-      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/order/${vm.tempOrder.id}`;
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/order/${item.id}`;
       vm.$validator.validate().then((result) => {
         if (result) {
-          vm.axios.put(api, { data: vm.tempOrder }).then((response) => {
+          vm.axios.put(api, { data: item }).then((response) => {
             if (response.data.success) {
               $('#orderModal').modal('hide');
               const { message } = response.data;
@@ -226,27 +226,26 @@ export default {
     },
   },
   computed: {
-    ...mapState('backend', ['orders', 'pagination']),
+    ...mapState('backend', ['orders', 'pagination', 'tempOrder']),
     ...mapState(['isLoading']),
+    copyTempOrder() {
+      return JSON.parse(JSON.stringify(this.tempOrder));
+      // 使用深拷貝,若是使用淺拷貝{...this.tempOrder}因為user是在更下一層物件,所以變動還是會改到原本的tempOrder。
+    },
+    copyOrders() {
+      return [...this.orders];
+    },
     sortOrder() {
       const vm = this;
       let newOrder = [];
-      if (vm.orders.length) {
-        newOrder = vm.orders.sort((a, b) => {
+      if (vm.copyOrders.length) {
+        newOrder = vm.copyOrders.sort((a, b) => {
           const aIsPaid = a.is_paid ? 1 : 0;
           const bIsPaid = b.is_paid ? 1 : 0;
           return bIsPaid - aIsPaid;
         });
       }
       return newOrder;
-    },
-    tempOrder: {
-      get() {
-        return this.$store.state.backend.tempOrder;
-      },
-      set(isNew, item) {
-        this.$store.commit('backend/OPENMODAL', { isNew, item });
-      },
     },
   },
   created() {

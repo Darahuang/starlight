@@ -108,7 +108,7 @@
                     @change="uploadFile"
                   />
                 </div>
-                <img class="img-fluid" :src="tempProduct.imageUrl" alt />
+                <img class="img-fluid" :src="copyTempProduct.imageUrl" alt />
               </div>
               <div class="col-sm-8">
                 <div class="form-group">
@@ -118,7 +118,7 @@
                     class="form-control"
                     id="title"
                     placeholder="請輸入標題"
-                    v-model="tempProduct.title"
+                    v-model="copyTempProduct.title"
                   />
                 </div>
                 <div class="form-row">
@@ -129,7 +129,7 @@
                       class="form-control"
                       id="category"
                       placeholder="請輸入分類"
-                      v-model="tempProduct.category"
+                      v-model="copyTempProduct.category"
                     />
                   </div>
                   <div class="form-group col-md-6">
@@ -139,7 +139,7 @@
                       class="form-control"
                       id="unit"
                       placeholder="請輸入單位"
-                      v-model="tempProduct.unit"
+                      v-model="copyTempProduct.unit"
                     />
                   </div>
                 </div>
@@ -151,7 +151,7 @@
                       class="form-control"
                       id="origin_price"
                       placeholder="請輸入原價"
-                      v-model="tempProduct.origin_price"
+                      v-model="copyTempProduct.origin_price"
                     />
                   </div>
                   <div class="form-group col-md-6">
@@ -161,7 +161,7 @@
                       class="form-control"
                       id="price"
                       placeholder="請輸入售價"
-                      v-model="tempProduct.price"
+                      v-model="copyTempProduct.price"
                     />
                   </div>
                 </div>
@@ -173,7 +173,7 @@
                     class="form-control"
                     id="description"
                     placeholder="請輸入產品描述"
-                    v-model="tempProduct.description"
+                    v-model="copyTempProduct.description"
                   ></textarea>
                 </div>
                 <div class="form-group">
@@ -183,7 +183,7 @@
                     class="form-control"
                     id="content"
                     placeholder="請輸入產品說明內容"
-                    v-model="tempProduct.content"
+                    v-model="copyTempProduct.content"
                   ></textarea>
                 </div>
                 <div class="form-group">
@@ -192,7 +192,7 @@
                       class="form-check-input"
                       type="checkbox"
                       id="is_enabled"
-                      v-model="tempProduct.is_enabled"
+                      v-model="copyTempProduct.is_enabled"
                       :true-value="1"
                       :false-value="0"
                     />
@@ -215,7 +215,7 @@
             <button
               type="button"
               class="btn btn-primary"
-              @click="updateProduct"
+              @click="updateProduct(copyTempProduct)"
             >
               確認
             </button>
@@ -292,8 +292,8 @@ export default {
     openModal(isNew, item) {
       this.$store.commit('backend/OPENMODAL', { isNew, item });
     },
-    updateProduct() {
-      this.$store.dispatch('backend/updateProduct');
+    updateProduct(item) {
+      this.$store.dispatch('backend/updateProduct', item);
     },
     deleteModal(item) {
       this.$store.commit('backend/DELETEMODAL', item);
@@ -311,15 +311,10 @@ export default {
     this.getProducts();
   },
   computed: {
-    ...mapState('backend', ['products', 'pagination', 'isNew', 'status']),
+    ...mapState('backend', ['products', 'pagination', 'isNew', 'status', 'tempProduct']),
     ...mapState(['isLoading']),
-    tempProduct: {
-      get() {
-        return this.$store.state.backend.tempProduct;
-      },
-      set(isNew, item) {
-        this.$store.commit('backend/OPENMODAL', { isNew, item });
-      },
+    copyTempProduct() {
+      return { ...this.tempProduct };
     },
   },
 };

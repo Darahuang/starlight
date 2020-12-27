@@ -58,10 +58,10 @@ export default {
         commit('LOADING', false, { root: true });
       });
     },
-    updateCoupon({ state, dispatch }) {
+    updateCoupon({ state, dispatch }, item) {
       if (state.isNew) {
         const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon`;
-        axios.post(api, { data: state.tempCoupon }).then((response) => {
+        axios.post(api, { data: item }).then((response) => {
           $('#couponModal').modal('hide');
           dispatch('getCoupons');
           const { message } = response.data;
@@ -69,9 +69,8 @@ export default {
           dispatch('updateMessage', { message, status }, { root: true });
         });
       } else {
-        const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon/${state.tempCoupon.id}`;
-        state.due_date = new Date(state.tempCoupon.due_date * 1000);
-        axios.put(api, { data: state.tempCoupon }).then((response) => {
+        const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/coupon/${item.id}`;
+        axios.put(api, { data: item }).then((response) => {
           $('#couponModal').modal('hide');
           dispatch('getCoupons');
           const { message } = response.data;

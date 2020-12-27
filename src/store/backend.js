@@ -42,8 +42,8 @@ export default {
       state.tempProduct = payload;
       $('#delProductModal').modal('show');
     },
-    OPENORDERMODAL(state, payload) {
-      state.tempOrder = payload;
+    OPENORDERMODAL(state, item) {
+      state.tempOrder = { ...item };
       $('#orderModal').modal('show');
     },
     FILESTATUS(state, payload) {
@@ -65,14 +65,14 @@ export default {
         }
       });
     },
-    updateProduct({ state, dispatch }) {
+    updateProduct({ state, dispatch }, payload) {
       let api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product`; // 新增商品
       let httpMethod = 'post';
       if (!state.isNew) {
-        api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product/${state.tempProduct.id}`; // 修改商品
+        api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_CUSTOMPATH}/admin/product/${payload.id}`; // 修改商品
         httpMethod = 'put';
       }
-      axios[httpMethod](api, { data: state.tempProduct }).then((response) => {
+      axios[httpMethod](api, { data: payload }).then((response) => {
         if (response.data.success) {
           $('#productModal').modal('hide');
           dispatch('getProducts');
