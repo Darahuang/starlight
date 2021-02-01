@@ -42,8 +42,7 @@ import Swiper from '../../node_modules/swiper/swiper-bundle';
 
 export default {
   data() {
-    return {
-    };
+    return {};
   },
   mounted() {
     this.initSwiper();
@@ -82,21 +81,5 @@ export default {
 </script>
 
 <style scoped>
-@import "../../node_modules/swiper/swiper-bundle.css";
-
-.bg-cover {
-  background-size: cover;
-  background-position: center center;
-}
-.card-info {
-  opacity: 0;
-  position: absolute;
-  background-color: rgba(88, 85, 85, 0.3);
-  top: 0;
-  bottom: 0;
-  transition: all 0.5s;
-}
-.card-info:hover {
-  opacity: 1;
-}
+@import '../../node_modules/swiper/swiper-bundle.css';
 </style>

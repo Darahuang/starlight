@@ -7,12 +7,7 @@
       :key="i"
     >
       {{ item.message }}
-      <button
-        type="button"
-        class="close"
-        @click="removeMessage(i)"
-        aria-label="Close"
-      >
+      <button type="button" class="close" @click="removeMessage(i)" aria-label="Close">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
@@ -39,13 +34,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.message-alert {
-  position: fixed;
-  max-width: 50%;
-  top: 56px;
-  right: 20px;
-  z-index: 1100;
-}
-</style>

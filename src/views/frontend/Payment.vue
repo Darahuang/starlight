@@ -14,9 +14,7 @@
             <tbody>
               <tr v-for="item in order.products" :key="item.id">
                 <td>{{ item.product.title }}</td>
-                <td class="align-middle">
-                  {{ item.qty }}{{ item.product.unit }}
-                </td>
+                <td class="align-middle">{{ item.qty }}{{ item.product.unit }}</td>
                 <td class="align-middle text-right">
                   {{ item.final_total | currencyFilter }}
                 </td>
@@ -25,14 +23,14 @@
             <tfoot>
               <tr>
                 <td colspan="2" class="text-right">總計</td>
-                <td class="text-right">{{ order.total }}</td>
+                <td class="text-right text-danger">{{ order.total }}</td>
               </tr>
             </tfoot>
           </table>
           <table class="table">
             <tbody>
               <tr>
-                <th>Email</th>
+                <th width="100">Email</th>
                 <td>{{ order.user.email }}</td>
               </tr>
               <tr>
@@ -58,19 +56,19 @@
                 <th>訂單編號</th>
                 <td>
                   <input type="text" id="demoInput" v-model="orderId" />
-                  <button
-                    id="btn"
-                    class="btn btn-outline-primary btn-sm ml-2"
-                    type="button"
-                    @click="copylink"
-                  >
-                    點選複製
-                  </button>
-                  <router-link
-                    to="/check_orders"
-                    class="btn btn-outline-primary btn-sm ml-2"
-                    >查看訂單</router-link
-                  >
+                  <div class="mt-2">
+                    <button
+                      id="btn"
+                      class="btn btn-outline-primary btn-sm mr-2"
+                      type="button"
+                      @click="copylink"
+                    >
+                      點選複製
+                    </button>
+                    <router-link to="/check_orders" class="btn btn-outline-primary btn-sm ml-2"
+                      >查看訂單</router-link
+                    >
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -87,9 +85,7 @@
             </button>
           </div>
           <div v-if="order.is_paid">
-            <router-link
-              to="/customer_orders"
-              class="btn btn-deep mr-2 btn-block"
+            <router-link to="/customer_orders" class="btn btn-deep mr-2 btn-block"
               >繼續選購商品</router-link
             >
           </div>
@@ -141,10 +137,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.step {
-  width: 50px;
-  height: 50px;
-}
-</style>

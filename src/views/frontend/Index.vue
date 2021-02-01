@@ -3,7 +3,7 @@
     <Header></Header>
     <loading :active.sync="isLoading"></loading>
     <section class="text-primary">
-      <div class="container bg-slight py-5 my-5">
+      <div class="container bg-slight py-md-5 py-4 my-5">
         <div class="row">
           <div class="col-md-4 text-center">
             <div class="mb-2">
@@ -31,15 +31,16 @@
     </section>
     <Swiper></Swiper>
     <section class="container mt-5" data-aos="fade-up">
-      <div class="info clearfix">
+      <div class="info clearfix mb-2">
         <h3 class="text-center text-primary mr-2 mb-3 font-weight-bold">
           <i class="fab fa-pagelines mr-2"></i>最新消息
         </h3>
         <router-link
           to="/news"
-          class="block text-decoration-none h6 bg-primary text-white p-1 text-center float-right mb-3"
-          >More info<i class="fas fa-arrow-alt-circle-right ml-2 full fa-2x"></i
-          ><i class="far fa-arrow-alt-circle-right ml-2 notfull fa-2x"></i
+          class="d-flex align-items-center text-decoration-none h6 bg-primary text-white px-3 py-1 text-center float-right mb-3"
+          ><p class="mt-0 mb-0">More</p>
+          <i class="fas fa-arrow-alt-circle-right ml-2 arrow fa-2x"></i
+          ><i class="far fa-arrow-alt-circle-right ml-2 arrow-hover fa-2x"></i
         ></router-link>
       </div>
       <div class="row">
@@ -53,16 +54,10 @@
                 class="bg-cover card-image card-height"
               ></div>
               <div class="card-body">
-                <span class="badge badge-accent float-right ml-2 py-1 px-3"
-                  >期間限定</span
-                >
-                <h5 class="card-title font-weight-bolder">
-                  萬聖節限定
-                </h5>
+                <span class="badge badge-accent float-right ml-2 py-1 px-3">期間限定</span>
+                <h5 class="card-title font-weight-bolder">萬聖節限定</h5>
                 <div>
-                  <p class="card-text">
-                    <i class="fas fa-clock mr-2"></i>9月28,2020
-                  </p>
+                  <p class="card-text"><i class="fas fa-clock mr-2"></i>9月28,2020</p>
                   <p class="h6 card-text">
                     南瓜限定特製餐點
                     <i class="fas fa-heart ml-2"></i>
@@ -82,16 +77,10 @@
                 class="bg-cover card-image card-height"
               ></div>
               <div class="card-body">
-                <span class="badge badge-accent float-right ml-2 py-1 px-3"
-                  >期間限定</span
-                >
-                <h5 class="card-title font-weight-bolder">
-                  中秋節限定
-                </h5>
+                <span class="badge badge-accent float-right ml-2 py-1 px-3">期間限定</span>
+                <h5 class="card-title font-weight-bolder">中秋節限定</h5>
                 <div>
-                  <p class="card-text">
-                    <i class="fas fa-clock mr-2"></i>8月18,2020
-                  </p>
+                  <p class="card-text"><i class="fas fa-clock mr-2"></i>8月18,2020</p>
                   <p class="h6 card-text">
                     中秋限定禮盒
                     <i class="fas fa-heart ml-2"></i>
@@ -111,16 +100,10 @@
                 class="bg-cover card-image card-height"
               ></div>
               <div class="card-body">
-                <span class="badge badge-accent float-right ml-2 py-1 px-3"
-                  >期間限定</span
-                >
-                <h5 class="card-title font-weight-bolder">
-                  歡慶父親節
-                </h5>
+                <span class="badge badge-accent float-right ml-2 py-1 px-3">期間限定</span>
+                <h5 class="card-title font-weight-bolder">歡慶父親節</h5>
                 <div>
-                  <p class="card-text">
-                    <i class="fas fa-clock mr-2"></i>7月18,2020
-                  </p>
+                  <p class="card-text"><i class="fas fa-clock mr-2"></i>7月18,2020</p>
                   <p class="h6 card-text">
                     與爸爸享用甜點打88折
                     <i class="fas fa-heart ml-2"></i>
@@ -133,27 +116,22 @@
       </div>
     </section>
     <section class="py-5" data-aos="fade-up">
-      <div class="container">
-        <div class="info clearfix">
+      <div class="container custom-gutters">
+        <div class="info clearfix mb-2">
           <h3 class="text-center text-primary mr-2 mb-3 font-weight-bold">
             <i class="fab fa-pagelines mr-2"></i>精選商品
           </h3>
           <router-link
             to="/customer_orders"
-            class="block float-right text-decoration-none h6 bg-primary text-white text-center mb-3 p-1"
-            >More items<i
-              class="fas fa-arrow-alt-circle-right ml-2 full fa-2x"
-            ></i
-            ><i class="far fa-arrow-alt-circle-right ml-2 notfull fa-2x"></i
-          ></router-link>
+            class="d-flex align-items-center float-right text-decoration-none h6 bg-primary text-white text-center mb-3 px-3 py-1"
+            ><p class="mt-0 mb-0">More</p>
+            <i class="far fa-arrow-alt-circle-right ml-2 arrow fa-2x"></i>
+            <i class="fas fa-arrow-alt-circle-right ml-2 arrow-hover fa-2x"></i>
+          </router-link>
         </div>
         <div class="row">
-          <div
-            class="col-md-3 col-6 mb-3"
-            v-for="item in products"
-            :key="item.id"
-          >
-            <div class="card">
+          <div class="col-md-3 col-6 mb-4" v-for="item in products" :key="item.id">
+            <div class="card card-hover">
               <div
                 class="card-image cursor bg-cover"
                 @click="getOneProduct(item.id)"
@@ -170,15 +148,13 @@
                     {{ item.title }}
                   </h6>
                 </a>
-                <div
-                  class="d-flex justify-content-between align-items-baseline"
-                >
+                <div class="d-flex justify-content-between align-items-baseline">
                   <div class="h5" v-if="!item.price">2,800 元</div>
-                  <del class="h6 text-secondary" v-if="item.price"
-                    >原價{{ item.origin_price }}元</del
-                  >
-                  <div class="h6 text-danger" v-if="item.price">
-                    特價{{ item.price }}元
+                  <del class="h6 text-secondary" v-if="item.price">{{
+                    item.origin_price | currencyFilter
+                  }}</del>
+                  <div class="h5 text-danger" v-if="item.price">
+                    {{ item.price | currencyFilter }}
                   </div>
                 </div>
                 <div class="cart mt-3">
@@ -205,11 +181,10 @@
         <div class="info clearfix">
           <router-link
             to="/customize"
-            class="block float-right text-decoration-none h6 bg-primary text-white text-center p-1 mb-3"
-            >More info<i
-              class="fas fa-arrow-alt-circle-right ml-2 full fa-2x"
-            ></i
-            ><i class="far fa-arrow-alt-circle-right ml-2 notfull fa-2x"></i
+            class="d-flex align-items-center float-right text-decoration-none h6 bg-primary text-white text-center px-3 py-1 mb-3"
+            ><p class="mt-0 mb-0">More</p>
+            <i class="fas fa-arrow-alt-circle-right ml-2 arrow fa-2x"></i
+            ><i class="far fa-arrow-alt-circle-right ml-2 arrow-hover fa-2x"></i
           ></router-link>
         </div>
       </div>
@@ -217,14 +192,12 @@
         <div class="col-md-6" data-aos="fade-right">
           <router-link to="/customize">
             <div
-              class="bg-cover bg-height position-relative"
+              class="bg-cover customize-height position-relative"
               style="
                 background-image: url(https://images.pexels.com/photos/4686823/pexels-photo-4686823.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
               "
             >
-              <div
-                class="card-body card-info d-flex justify-content-center align-items-center"
-              >
+              <div class="card-body card-info d-flex justify-content-center align-items-center">
                 <h6 class="nav-link p-0 mb-3 text-white">查看更多</h6>
               </div>
             </div>
@@ -236,16 +209,13 @@
             <p>把平日不敢表達的感謝或是愛意,透過訂製蛋糕來表示吧!</p>
             <div class="mt-4">
               <h6 class="mb-3 text-deep font-weight-bold">
-                <i class="fas fa-chevron-right mr-2"></i>Step1
-                提供想製作的圖片及報價
+                <i class="fas fa-chevron-right mr-2"></i>Step1 提供想製作的圖片及報價
               </h6>
               <h6 class="mb-3 text-deep font-weight-bold">
-                <i class="fas fa-chevron-right mr-2"></i>Step2
-                確認製作蛋糕時間並付款
+                <i class="fas fa-chevron-right mr-2"></i>Step2 確認製作蛋糕時間並付款
               </h6>
               <h6 class="text-deep font-weight-bold">
-                <i class="fas fa-chevron-right mr-2"></i>Step3
-                領取的您客製化造型蛋糕
+                <i class="fas fa-chevron-right mr-2"></i>Step3 領取的您客製化造型蛋糕
               </h6>
             </div>
           </div>
@@ -269,11 +239,7 @@
             <div class="p-md-5 p-3">
               <div class="p-3 text-center w-md-50 mx-auto z-index bg-red">
                 <div class="email d-flex">
-                  <label
-                    for="email"
-                    class="material-icons email-icon text-white"
-                    >email</label
-                  >
+                  <label for="email" class="material-icons email-icon text-white">email</label>
                   <input
                     type="email"
                     class="bg-transparent text-white email-input w-100"
@@ -290,10 +256,7 @@
                     <i class="material-icons">arrow_forward</i>
                   </button>
                 </div>
-                <p
-                  class="text-danger mt-3 font-weight-bolder"
-                  v-if="errors.has('email')"
-                >
+                <p class="text-danger mt-3 font-weight-bolder" v-if="errors.has('email')">
                   請輸入Email
                 </p>
               </div>
@@ -313,10 +276,8 @@
                 "
                 class="bg-cover card-image card-height"
               ></div>
-              <div
-                class="card-body card-info d-flex justify-content-center align-items-center"
-              >
-                <h6 class="nav-link p-0 mb-3 text-white">關於我們</h6>
+              <div class="card-body card-info d-flex justify-content-center align-items-center">
+                <h6 class="text-white">關於我們</h6>
               </div>
             </div>
           </router-link>
@@ -330,10 +291,8 @@
                 "
                 class="bg-cover card-image card-height"
               ></div>
-              <div
-                class="card-body card-info d-flex justify-content-center align-items-center"
-              >
-                <h6 class="nav-link p-0 mb-3 text-white">餐點介紹</h6>
+              <div class="card-body card-info d-flex justify-content-center align-items-center">
+                <h6 class="text-white">餐點介紹</h6>
               </div>
             </div>
           </router-link>
@@ -347,10 +306,8 @@
                 "
                 class="bg-cover card-image card-height"
               ></div>
-              <div
-                class="card-body card-info d-flex justify-content-center align-items-center"
-              >
-                <h6 class="nav-link p-0 mb-3 text-white">訂單查詢</h6>
+              <div class="card-body card-info d-flex justify-content-center align-items-center">
+                <h6 class="text-white">訂單查詢</h6>
               </div>
             </div>
           </router-link>
@@ -395,13 +352,13 @@ export default {
     },
     addtoCart(id, qty = 1) {
       const vm = this;
-      const target = vm.cart.carts.filter((items) => items.product_id === id); // 過濾是否有相同產品重覆加入購物車
+      const target = vm.cart.carts.filter((items) => items.product_id === id);
       if (target.length > 0) {
-        const previousCart = target[0]; // 原先的購物車
-        const originCartId = previousCart.id; // 原先的購物車id
+        const previousCart = target[0];
+        const originCartId = previousCart.id;
         const orginQty = previousCart.qty;
         const newQty = orginQty + qty;
-        const originProductId = previousCart.product.id; // 產品id
+        const originProductId = previousCart.product.id;
         vm.$store.dispatch('updateQty', { originCartId, originProductId, newQty });
       } else {
         vm.$store.dispatch('addToCart', { id, qty });
@@ -423,120 +380,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.bg-cover {
-  background-size: cover;
-  background-position: center center;
-}
-
-.email {
-  position: relative;
-  padding-left: 40px;
-}
-
-.email-icon {
-  position: absolute;
-  top: 5px;
-  left: 40px;
-}
-.email-input {
-  border: none;
-  outline: none;
-  border-bottom: 3px solid #fff;
-  background: none;
-  padding-left: 40px;
-}
-@media (max-width: 767.98px) {
-  .email {
-    padding-left: 0px;
-  }
-  .email-icon {
-    position: absolute;
-    top: 5px;
-    left: 10px;
-  }
-}
-.bg-height {
-  height: 300px;
-  z-index: 1;
-}
-@media (max-width: 767.98px) {
-  .bg-height {
-    height: 200px;
-  }
-}
-.bg-fixed {
-  background-attachment: fixed;
-}
-
-@media (min-width: 767.98px) {
-  .margin-md-nt {
-    margin-top: -30px;
-    margin-bottom: -30px;
-  }
-  .w-md-50 {
-    width: 60%;
-  }
-}
-.notfull {
-  display: inline;
-}
-.full {
-  display: none;
-}
-.info a:hover i.full {
-  display: inline;
-}
-.info a:hover i.notfull {
-  display: none;
-}
-.cursor {
-  cursor: pointer;
-}
-.cart {
-  display: none;
-}
-.card:hover .cart {
-  display: block;
-  text-align: center;
-}
-.card {
-  transition: all 1s;
-  overflow: hidden;
-}
-.card:hover {
-  box-shadow: 5px 5px 7px rgba(153, 148, 148, 0.4);
-}
-.card-image {
-  transform: scale(1, 1);
-  transition: all 1s ease-out;
-}
-.card-image:hover {
-  transform: scale(1.15, 1.15);
-}
-.card-info {
-  opacity: 0;
-  position: absolute;
-  background-color: rgba(88, 85, 85, 0.5);
-  top: 0;
-  bottom: 0;
-  width: 100%;
-  transition: all 0.5s;
-}
-.card-info:hover {
-  opacity: 1;
-}
-.card-height {
-  height: 250px;
-}
-@media (max-width: 767.98px) {
-  .card-height {
-    height: 150px;
-  }
-}
-.block {
-  display: block;
-  width: 150px;
-}
-</style>

@@ -1,4 +1,29 @@
 @import "~bootstrap/scss/functions"; 
 @import "~./helpers/_variables"; 
 @import "~bootstrap/scss/bootstrap";
-@import "~./helpers/_dashboard";
+
+// utils
+@import "utils/Mixin";
+// pages
+@import "pages/About";
+@import "pages/CheckOrders";
+@import "pages/Checkout";
+@import "pages/CustomerOrders";
+@import "pages/Customize";
+@import "pages/dashboard";
+@import "pages/Index";
+@import "pages/Login";
+@import "pages/News";
+@import "pages/OneProduct";
+// components
+@import "components/AlertMessage";
+@import "components/CheckoutStep";
+@import "components/Footer";
+@import "components/Header";
+@import "components/Layout";
+@import "components/Menu";
+@import "components/Sidebar";
+@import "components/Swiper";
+
+
+

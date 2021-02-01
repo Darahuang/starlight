@@ -15,10 +15,6 @@ const routes = [
     component: () => import('../views/frontend/Login.vue'),
   },
   {
-    path: '*',
-    redirect: '/login',
-  },
-  {
     path: '/admin',
     name: 'Dashboard',
     component: () => import('../views/backend/Dashboard.vue'),
@@ -64,6 +60,11 @@ const routes = [
         component: () => import('../views/frontend/News.vue'),
       },
       {
+        path: '/favlist',
+        name: 'FavList',
+        component: () => import('../views/frontend/FavList.vue'),
+      },
+      {
         path: '/customer_orders',
         name: 'CustomerOrders',
         component: () => import('../views/frontend/CustomerOrders.vue'),
@@ -94,6 +95,10 @@ const routes = [
         component: () => import('../views/frontend/Customize.vue'),
       },
     ],
+  },
+  {
+    path: '*',
+    redirect: '/login',
   },
 
 ];

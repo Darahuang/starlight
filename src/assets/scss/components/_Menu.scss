@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap');
+.icon {
+  position: relative;
+}
+.badge-position {
+  position: absolute;
+  top: -8px;
+}
+.link-hover {
+  @include link-hover;
+}
+
+.table-width {
+  width: 245px;
+}
+.table-font {
+  font-size: 10px;
+}
+.navbar {
+  .navbar-brand {
+    .logo-font {
+      font-family: 'Caveat', cursive;
+      font-size: 30px;
+      padding: 0;
+    }
+  }
+}

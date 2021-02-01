@@ -1,0 +1,10 @@
+.qty-input {
+  width: 45px;
+  border-radius: 0px;
+}
+.bg-cover {
+  @include bg-cover;
+}
+.bg-height {
+  height: 400px;
+}

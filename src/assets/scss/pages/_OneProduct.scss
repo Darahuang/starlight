@@ -1,0 +1,43 @@
+.productImg {
+  height: 450px;
+  @include tablet {
+    height: 300px;
+  }
+}
+.relatedImg {
+  height: 225px;
+  @include tablet {
+    height: 150px;
+  }
+}
+
+.line-height {
+  line-height: 1.5rem;
+}
+.bg-cover {
+  @include bg-cover;
+}
+.white-space {
+  white-space: pre;
+}
+.mb {
+  margin-bottom: 0.5rem;
+}
+
+.cursor {
+  cursor: pointer;
+}
+
+.related-info {
+  opacity: 0;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: rgba(56, 52, 52, 0.5);
+  transition: all 1s;
+  padding: 10px;
+}
+.card:hover .related-info {
+  opacity: 1;
+}

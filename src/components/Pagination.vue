@@ -16,9 +16,7 @@
           :key="page"
           :class="{ active: childPagination.current_page === page }"
         >
-          <a class="page-link" href="#" @click.prevent="updatePage(page)">{{
-            page
-          }}</a>
+          <a class="page-link" href="#" @click.prevent="updatePage(page)">{{ page }}</a>
         </li>
         <li class="page-item" :class="{ disabled: !childPagination.has_next }">
           <a

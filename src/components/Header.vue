@@ -10,27 +10,33 @@
         <div class="carousel-inner">
           <div
             class="carousel-item header-carousel-item active"
-            style="background-image: url(https://images.pexels.com/photos/907142/pexels-photo-907142.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940)"
+            style="
+              background-image: url(https://images.pexels.com/photos/907142/pexels-photo-907142.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
+            "
           >
-            <div class="carousel-caption d-none d-md-block">
+            <div class="carousel-caption">
               <h5>Starlight</h5>
               <p>歡迎來品嘗~</p>
             </div>
           </div>
           <div
             class="carousel-item header-carousel-item"
-            style="background-image: url(https://images.pexels.com/photos/239581/pexels-photo-239581.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940)"
+            style="
+              background-image: url(https://images.pexels.com/photos/239581/pexels-photo-239581.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
+            "
           >
-            <div class="carousel-caption d-none d-md-block">
+            <div class="carousel-caption">
               <h5>堅持品質</h5>
               <p>竭誠為您帶來最好吃的甜點</p>
             </div>
           </div>
           <div
             class="carousel-item header-carousel-item"
-            style="background-image: url(https://images.pexels.com/photos/461431/pexels-photo-461431.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940)"
+            style="
+              background-image: url(https://images.pexels.com/photos/461431/pexels-photo-461431.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
+            "
           >
-            <div class="carousel-caption d-none d-md-block ">
+            <div class="carousel-caption">
               <h5>用心製作</h5>
               <p>以新鮮、美味、樸實為原則,作出能夠讓客人品嘗後,露出笑容的甜點</p>
             </div>
@@ -58,19 +64,3 @@
     </header>
   </div>
 </template>
-
-<style scoped>
-.header-carousel-item {
-  height: 450px;
-  background-size: cover;
-  background-position: center center;
-}
-@media(max-width: 768px){
-  .header-carousel-item {
-  height: 350px;
-}
-}
-.carousel-caption {
-  background-color: rgba(163, 163, 163, 0.5);
-}
-</style>

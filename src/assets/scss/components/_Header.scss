@@ -1,0 +1,11 @@
+.header-carousel-item {
+  height: 450px;
+  background-size: cover;
+  background-position: center center;
+  @include tablet {
+    height: 350px;
+  }
+}
+.carousel-caption {
+  background-color: rgba(163, 163, 163, 0.5);
+}

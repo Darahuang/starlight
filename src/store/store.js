@@ -304,7 +304,7 @@ const store = new Vuex.Store({
       const index = state.collected.findIndex((item) => item.id === payload);
       if (index === -1) return;
 
-      // remove the movie from data
+      // remove the collected Item from data
       commit('REMOVECOLLECTEDITEMS', index);
       const message = `${favItem.title} 移除收藏清單!`;
       const status = 'danger';

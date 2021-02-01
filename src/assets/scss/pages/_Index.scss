@@ -1,0 +1,105 @@
+.bg-cover {
+  @include bg-cover;
+}
+.email {
+  position: relative;
+  padding-left: 40px;
+  @include tablet {
+    padding-left: 0px;
+  }
+  .email-icon {
+    position: absolute;
+    top: 5px;
+    left: 40px;
+    @include tablet {
+      position: absolute;
+      top: 5px;
+      left: 10px;
+    }
+  }
+  .email-input {
+    border: none;
+    outline: none;
+    border-bottom: 3px solid #fff;
+    background: none;
+    padding-left: 40px;
+  }
+}
+
+.customize-height {
+  height: 300px;
+  z-index: 1;
+  @include tablet {
+    height: 200px;
+  }
+}
+
+.bg-fixed {
+  background-attachment: fixed;
+}
+
+.info {
+  .arrow {
+    display: inline;
+  }
+  .arrow-hover {
+    display: none;
+  }
+  a:hover {
+    i.arrow-hover {
+      display: inline;
+    }
+    i.arrow {
+      display: none;
+    }
+  }
+}
+
+.card {
+  &.card-hover {
+    transition: 0.5s;
+    &:hover {
+      transform: rotate(3deg);
+    }
+  }
+
+  @include card;
+  &:hover {
+    & .cart {
+      display: block;
+      text-align: center;
+    }
+  }
+  .cart {
+    display: none;
+  }
+  .card-info {
+    @include card-info;
+  }
+  .card-height {
+    height: 250px;
+    @include tablet {
+      height: 150px;
+    }
+  }
+}
+
+$custom-gutter-width: 20px; // 將欄距改成 20px
+.custom-gutters {
+  &.container {
+    padding-left: $custom-gutter-width / 2;
+    padding-right: $custom-gutter-width / 2;
+  }
+  .row {
+    margin-left: -($custom-gutter-width / 2);
+    margin-right: -($custom-gutter-width / 2);
+  }
+  .col-md-3 {
+    padding-left: $custom-gutter-width / 2;
+    padding-right: $custom-gutter-width / 2;
+  }
+  .col-6 {
+    padding-left: $custom-gutter-width / 2;
+    padding-right: $custom-gutter-width / 2;
+  }
+}

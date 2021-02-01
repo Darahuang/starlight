@@ -3,27 +3,23 @@
     <AlertMessage></AlertMessage>
     <loading :active.sync="isLoading"></loading>
     <div class="text-right mt-4">
-      <button
-        class="btn btn-primary"
-        type="button"
-        @click="openCouponModal(true)"
-      >
+      <button class="btn btn-primary" type="button" @click="openCouponModal(true)">
         建立新的優惠券
       </button>
     </div>
     <table class="table mt-4">
       <thead>
         <tr>
-          <th>名稱</th>
+          <th width="20%" class="d-none d-sm-table-cell">名稱</th>
           <th>折扣百分比</th>
-          <th>到期日</th>
+          <th width="20%">到期日</th>
           <th>是否啟用</th>
           <th>編輯</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="(item, key) in coupons" :key="key">
-          <td>{{ item.title }}</td>
+          <td class="d-none d-sm-table-cell">{{ item.title }}</td>
           <td>{{ item.percent }}%</td>
           <td>{{ item.due_date | dateFilter }}</td>
           <td>
@@ -65,12 +61,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">編輯優惠券</h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -97,12 +88,7 @@
             </div>
             <div class="form-group">
               <label for="due_date">到期日</label>
-              <input
-                type="date"
-                id="due_date"
-                class="form-control"
-                v-model="due_date"
-              />
+              <input type="date" id="due_date" class="form-control" v-model="due_date" />
             </div>
             <div class="form-group">
               <label for="percent">折扣百分比</label>
@@ -124,21 +110,17 @@
                   :false-value="0"
                   v-model="copyTempCoupon.is_enabled"
                 />
-                <label for="is_enabled" class="form-check-label"
-                  >是否啟用</label
-                >
+                <label for="is_enabled" class="form-check-label">是否啟用</label>
               </div>
             </div>
           </div>
           <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             <button
               type="button"
-              class="btn btn-secondary"
-              data-dismiss="modal"
+              class="btn btn-primary"
+              @click="updateCoupon(copyTempCoupon, due_date)"
             >
-              Close
-            </button>
-            <button type="button" class="btn btn-primary" @click="updateCoupon(copyTempCoupon, due_date)">
               更新優惠券
             </button>
           </div>
@@ -161,12 +143,7 @@
             <h5 class="modal-title" id="exampleModalLabel">
               <span>刪除優惠券</span>
             </h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -176,16 +153,10 @@
             (刪除後將無法恢復)。
           </div>
           <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-outline-secondary"
-              data-dismiss="modal"
-            >
+            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
               取消
             </button>
-            <button type="button" class="btn btn-danger" @click="deleteCoupon">
-              確認刪除
-            </button>
+            <button type="button" class="btn btn-danger" @click="deleteCoupon">確認刪除</button>
           </div>
         </div>
       </div>
@@ -201,11 +172,6 @@ export default {
   components: {
     AlertMessage,
   },
-  // data() {
-  //   return {
-  //     due_date: new Date(),
-  //   };
-  // },
   methods: {
     getCoupons() {
       this.$store.dispatch('coupons/getCoupons');
@@ -242,7 +208,6 @@ export default {
         this.$store.commit('coupons/DUEDATE', val);
       },
     },
-
   },
 };
 </script>

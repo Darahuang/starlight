@@ -42,8 +42,7 @@
           <div class="col-sm-6">
             <h3 class="text-heavy">堅持</h3>
             <p class="h6 line-height">
-              我們堅持使用嚴選的天然發酵奶油，取代市面上常見的酥油、乳瑪琳、人造奶油
-              等...
+              我們堅持使用嚴選的天然發酵奶油，取代市面上常見的酥油、乳瑪琳、人造奶油 等...
               及使用進口頂級麵粉以及台灣在地生產有機食材，融入我們的甜點及飲品中，
               拒絕使用任何人工香精等添加物，嚴選健康的食材是我們的堅持，希望讓每個人品嚐美味的同時也能減少負擔。。
             </p>
@@ -66,36 +65,38 @@
         </h2>
         <div class="row">
           <div class="col-md-6 p-3">
-            <p>
-              <span class="mr-2 text-primary">
-                <i class="fas fa-phone"></i>
-              </span>
-              <span>聯絡電話：0912-345678</span>
-            </p>
-            <p>
-              <span class="mr-2 text-primary">
-                <i class="fas fa-map-marker-alt"></i>
-              </span>
-              <span>地址：112台北市北投區大業路516巷2-22</span>
-            </p>
-            <p>
-              <span class="mr-2 text-primary">
-                <i class="fas fa-envelope"></i>
-              </span>
-              <span>信箱：starlight@gmail.com</span>
-            </p>
-            <p>
-              <span class="mr-2 text-primary">
-                <i class="fas fa-user"></i>
-              </span>
-              <span>聯絡人：黃先生</span>
-            </p>
-            <p>
-              <span class="mr-2 text-primary">
-                <i class="fas fa-clock"></i>
-              </span>
-              <span>營業時間：11：00 ~ 18：00 每週一公休</span>
-            </p>
+            <ul class="list-inline">
+              <li class="mb-3">
+                <span class="mr-2 text-primary">
+                  <i class="fas fa-phone"></i>
+                </span>
+                <span>聯絡電話：0912-345678</span>
+              </li>
+              <li class="mb-3">
+                <span class="mr-2 text-primary">
+                  <i class="fas fa-map-marker-alt"></i>
+                </span>
+                <span>地址：112台北市北投區大業路516巷2-22</span>
+              </li>
+              <li class="mb-3">
+                <span class="mr-2 text-primary">
+                  <i class="fas fa-envelope"></i>
+                </span>
+                <span>信箱：starlight@gmail.com</span>
+              </li>
+              <li class="mb-3">
+                <span class="mr-2 text-primary">
+                  <i class="fas fa-user"></i>
+                </span>
+                <span>聯絡人：黃先生</span>
+              </li>
+              <li class="mb-3">
+                <span class="mr-2 text-primary">
+                  <i class="fas fa-clock"></i>
+                </span>
+                <span>營業時間：11：00 ~ 18：00 每週一公休</span>
+              </li>
+            </ul>
           </div>
           <div class="col-md-6">
             <iframe
@@ -124,56 +125,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.line-height {
-  line-height: 1.5rem;
-}
-
-.box {
-  height: 250px;
-}
-
-.bg-cover {
-  background-position: center;
-  background-size: cover;
-}
-
-.timeline-section {
-  position: relative;
-}
-
-.timeline-section::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  width: 3px;
-  transform: translateX(-50%);
-  background-color: #ccc;
-}
-.timeline-pointer {
-  position: relative;
-}
-.timeline-pointer::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  border: 3px solid #ccc;
-  transform: translateX(-50%);
-  background-color: #ccc;
-  z-index: 10;
-}
-@media (max-width: 576px) {
-  .timeline-section::after,
-  .timeline-pointer::after {
-    display: none;
-  }
-}
-</style>

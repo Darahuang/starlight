@@ -1,7 +1,7 @@
 <template>
   <div>
     <footer>
-      <div class="bg-white mt-5  footer-height">
+      <div class="bg-white mt-5 footer-height">
         <div class="text-center text-deep">
           <img
             src="../assets/imgs/logo.svg"
@@ -20,7 +20,7 @@
               </li>
               <li class="mr-2">
                 <a href="#">
-                  <i class="fab fa-instagram instagram fa-2x"></i>
+                  <i class="fab fa-instagram instagram-bg fa-2x"></i>
                 </a>
               </li>
               <li class="mr-2">
@@ -40,34 +40,3 @@
     </footer>
   </div>
 </template>
-<style scoped>
-
-.instagram {
-  color: transparent;
-  background: radial-gradient(
-    circle at 30% 107%,
-    #fdf497 0%,
-    #fdf497 5%,
-    #fd5949 45%,
-    #d6249f 60%,
-    #285aeb 90%
-  );
-  background: -webkit-radial-gradient(
-    circle at 30% 107%,
-    #fdf497 0%,
-    #fdf497 5%,
-    #fd5949 45%,
-    #d6249f 60%,
-    #285aeb 90%
-  );
-  background-clip: text;
-  -webkit-background-clip: text;
-}
-</style>
-
-<script>
-
-export default {
-
-};
-</script>

@@ -2,7 +2,7 @@
   <div>
     <loading :active.sync="isLoading"></loading>
     <section
-      class="container py-5 bg-cover mt-5"
+      class="container py-5 bg-cover"
       data-aos="fade-up"
       style="
         background-image: url(https://images.unsplash.com/photo-1502355984-b735cb2550ce?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80);
@@ -13,11 +13,7 @@
           <div class="bg-deep p-5 my-5">
             <h5 class="text-white pb-3 font-weight-bolder">請輸入訂單號碼：</h5>
             <input type="text" class="form-control" v-model="id" />
-            <button
-              class="btn btn-primary mt-4"
-              @click="checkorder(id)"
-              type="button"
-            >
+            <button class="btn btn-primary mt-4" @click="checkorder(id)" type="button">
               查詢訂單
             </button>
           </div>
@@ -54,7 +50,7 @@
                   <th>付款狀況</th>
                   <td>
                     <span v-if="!checkOrder.is_paid">尚未付款</span>
-                    <span v-else class="text-primary">確認付款</span>
+                    <span v-else class="text-primary text-success">確認付款</span>
                   </td>
                 </tr>
               </tbody>
@@ -67,27 +63,19 @@
             <i class="far fa-list-alt ml-2"></i>
           </h5>
           <div class="row" v-for="item in checkOrder.products" :key="item.id">
-            <div class="col-3 mb-3">
+            <div class="col-4 mb-3">
               <div class="img">
-                <img
-                  :src="item.product.imageUrl"
-                  alt
-                  srcset
-                  width="80px"
-                  height="80px"
-                />
+                <img :src="item.product.imageUrl" alt srcset width="80px" height="80px" />
               </div>
             </div>
-            <div class="col-9">
+            <div class="col-8">
               <h6>{{ item.product.title }} x{{ item.qty }}</h6>
               <h6>小計{{ item.final_total | currencyFilter }}</h6>
             </div>
           </div>
           <hr />
           <div>
-            <h3 class="text-right text-primary">
-              總計{{ checkOrder.total | currencyFilter }}
-            </h3>
+            <h5 class="text-right text-danger">總計{{ checkOrder.total | currencyFilter }}</h5>
           </div>
         </div>
       </div>
@@ -116,10 +104,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.bg-cover {
-  background-size: cover;
-  background-position: center center;
-}
-</style>

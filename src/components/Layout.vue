@@ -5,7 +5,7 @@
       <AlertMessage></AlertMessage>
       <router-view></router-view>
       <button
-        class="btn position-fixed"
+        class="btn position-fixed btn-hover"
         id="gotopBtn"
         style="bottom: 0px; right: 0px; display: none"
         @click="gotop"
@@ -19,7 +19,6 @@
 
 <script>
 import $ from 'jquery';
-
 import Menu from './Menu.vue';
 import Footer from './Footer.vue';
 import AlertMessage from './AlertMessage.vue';
@@ -48,11 +47,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.btn:hover,
-.btn:focus {
-  color: #f0d22c;
-}
-
-</style>

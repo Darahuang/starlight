@@ -1,0 +1,48 @@
+.line-height {
+  line-height: 1.5rem;
+}
+
+.box {
+  height: 250px;
+}
+
+.bg-cover {
+  @include bg-cover;
+}
+
+.timeline-section {
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 3px;
+    transform: translateX(-50%);
+    background-color: #ccc;
+    @include mobile {
+      display: none;
+    }
+  }
+  .timeline-pointer {
+    position: relative;
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 3px solid #ccc;
+    transform: translateX(-50%);
+    background-color: #ccc;
+    z-index: 10;
+    @include mobile {
+      display: none;
+    }
+  }
+}

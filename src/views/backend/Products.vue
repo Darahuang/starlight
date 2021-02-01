@@ -3,29 +3,29 @@
     <AlertMessage></AlertMessage>
     <loading :active.sync="isLoading"></loading>
     <div class="text-right mt-4">
-      <button type="button" class="btn btn-primary" @click="openModal(true)">
-        建立新的產品
-      </button>
+      <button type="button" class="btn btn-primary" @click="openModal(true)">建立新的產品</button>
     </div>
     <div class="table-responsive">
       <table class="table mt-4 table-hover">
         <thead>
           <tr>
-            <th width="120">分類</th>
+            <th>分類</th>
             <th>產品名稱</th>
-            <th width="100">原價</th>
-            <th width="100">售價</th>
-            <th width="100">是否啟用</th>
-            <th width="120">編輯</th>
+            <th class="d-none d-md-table-cell">原價</th>
+            <th>售價</th>
+            <th class="d-none d-md-table-cell">是否啟用</th>
+            <th>編輯</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="item in products" :key="item.id">
             <td>{{ item.category }}</td>
             <td>{{ item.title }}</td>
-            <td class="text-right">{{ item.origin_price | currencyFilter }}</td>
+            <td class="text-right d-none d-md-table-cell">
+              {{ item.origin_price | currencyFilter }}
+            </td>
             <td class="text-right">{{ item.price | currencyFilter }}</td>
-            <td>
+            <td class="d-none d-md-table-cell">
               <span v-if="item.is_enabled" class="text-success">啟用</span>
               <span v-else>未啟用</span>
             </td>
@@ -52,9 +52,7 @@
       </table>
     </div>
 
-    <Pagination
-      :childPagination="pagination" @emitPage="getProducts"
-    ></Pagination>
+    <Pagination :childPagination="pagination" @emitPage="getProducts"></Pagination>
     <!-- Modal 新增產品 -->
     <div
       class="modal fade"
@@ -71,12 +69,7 @@
             <h5 class="modal-title" id="exampleModalLabel">
               <span>新增產品</span>
             </h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -85,20 +78,12 @@
               <div class="col-sm-4">
                 <div class="form-group">
                   <label for="image">輸入圖片網址</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="image"
-                    placeholder="請輸入圖片連結"
-                  />
+                  <input type="text" class="form-control" id="image" placeholder="請輸入圖片連結" />
                 </div>
                 <div class="form-group">
                   <label for="customFile">
                     或 上傳圖片
-                    <i
-                      class="fas fa-spinner fa-spin"
-                      v-if="status.fileUploading"
-                    ></i>
+                    <i class="fas fa-spinner fa-spin" v-if="status.fileUploading"></i>
                   </label>
                   <input
                     type="file"
@@ -196,27 +181,17 @@
                       :true-value="1"
                       :false-value="0"
                     />
-                    <label class="form-check-label" for="is_enabled"
-                      >是否啟用</label
-                    >
+                    <label class="form-check-label" for="is_enabled">是否啟用</label>
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-outline-secondary"
-              data-dismiss="modal"
-            >
+            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
               取消
             </button>
-            <button
-              type="button"
-              class="btn btn-primary"
-              @click="updateProduct(copyTempProduct)"
-            >
+            <button type="button" class="btn btn-primary" @click="updateProduct(copyTempProduct)">
               確認
             </button>
           </div>
@@ -239,12 +214,7 @@
             <h5 class="modal-title" id="exampleModalLabel">
               <span>刪除產品</span>
             </h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -254,20 +224,10 @@
             商品(刪除後將無法恢復)。
           </div>
           <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-outline-secondary"
-              data-dismiss="modal"
-            >
+            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
               取消
             </button>
-            <button
-              type="button"
-              class="btn btn-danger"
-              @click="deleteProduct()"
-            >
-              確認刪除
-            </button>
+            <button type="button" class="btn btn-danger" @click="deleteProduct()">確認刪除</button>
           </div>
         </div>
       </div>
