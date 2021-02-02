@@ -38,7 +38,7 @@
             </li>
           </ul>
           <div class="d-flex justify-content-end align-items-center">
-            <div class="position-relative">
+            <div class="position-relative" v-if="collected.length !== 0">
               <router-link
                 to="/favlist"
                 class="nav-link link-hover text-secondary h5 text-center mb-0"
@@ -48,6 +48,29 @@
                   collected.length
                 }}</span>
               </router-link>
+            </div>
+            <div class="dropdown" v-else>
+              <a
+                class="nav-link link-hover text-secondary h5 text-center mb-0 ml-1"
+                href="#"
+                role="button"
+                id="cart"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                <i class="fas fa-heart"></i>
+              </a>
+              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="cart">
+                <div class="table-width p-3">
+                  <div class="text-center">
+                    <h6 class="text-primary">您的收藏清單目前是空的</h6>
+                    <router-link to="/customer_orders" class="btn btn-heavy btn-sm"
+                      >繼續逛逛</router-link
+                    >
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="position-relative" v-if="cart.total !== 0">
               <router-link
@@ -71,9 +94,6 @@
                 aria-expanded="false"
               >
                 <i class="fas fa-shopping-cart"></i>
-                <span v-if="cart.carts.length" class="badge badge-danger badge-position">
-                  {{ cart.carts.length }}</span
-                >
               </a>
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="cart">
                 <div class="table-width p-3">

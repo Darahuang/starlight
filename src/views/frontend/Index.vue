@@ -105,7 +105,7 @@
                 <div>
                   <p class="card-text"><i class="fas fa-clock mr-2"></i>7月18,2020</p>
                   <p class="h6 card-text">
-                    與爸爸享用甜點打88折
+                    快閃88折
                     <i class="fas fa-heart ml-2"></i>
                   </p>
                 </div>

@@ -1,9 +1,9 @@
 <template>
   <div>
     <div class="container">
-      <div class="row d-flex justify-content-center">
+      <div class="row d-flex justify-content-center" v-if="collected.length !== 0">
         <div class="col-md-8">
-          <div class="p-3 table-font" v-if="collected.length !== 0">
+          <div class="p-3 table-font" >
             <h2 class="text-center text-primary py-3 font-weight-bolder">
               <i class="fab fa-pagelines mr-2"></i>收藏清單
             </h2>
@@ -20,14 +20,14 @@
               <tbody>
                 <tr v-for="(item, index) in collected" :key="index">
                   <td
-                    class="align-middle cursor d-md-table-cell d-none text-center"
+                    class="align-middle cursor d-md-table-cell d-none text-center "
                     @click="getOneProduct(item.id)"
                   >
-                    <img :src="item.imageUrl" width="100px" height="100px" alt srcset />
+                    <img :src="item.imageUrl" class="tab-hover" width="80px" height="80px" alt srcset />
                   </td>
 
                   <td class="align-middle cursor" @click="getOneProduct(item.id)">
-                    <span class="link-bg p-2"> {{ item.title }}</span>
+                    <span class="link-hover"> {{ item.title }}</span>
                   </td>
                   <td class="align-middle text-center">
                     <a href="#" class="d-block" @click.prevent="addtoCart(item.id, (qty = 1))">
@@ -50,14 +50,19 @@
               </tbody>
             </table>
           </div>
-          <div class="table-width p-3" v-else>
-            <div class="text-center">
-              <h6 class="text-primary">您的收藏清單目前是空的</h6>
-              <router-link to="/customer_orders" class="btn btn-heavy btn-sm" @click="collapse"
-                >繼續逛逛</router-link
-              >
-            </div>
-          </div>
+        </div>
+      </div>
+      <div v-else class="row justify-content-center">
+        <div
+          class="col-md-8 text-center bg-height bg-cover d-flex flex-column justify-content-center align-items-center"
+          style="
+            background-image: url(https://images.unsplash.com/photo-1576021257863-743c50564725?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80);
+          "
+        >
+          <p class="text-primary font-weight-bolder h6 ">
+            收藏清單中目前沒有商品
+          </p>
+          <button type="button" class="btn btn-accent" @click="toCustomerOrders">繼續逛逛</button>
         </div>
       </div>
     </div>
@@ -88,6 +93,10 @@ export default {
       } else {
         vm.$store.dispatch('addToCart', { id, qty });
       }
+    },
+    toCustomerOrders() {
+      const vm = this;
+      vm.$router.push('/customer_orders');
     },
   },
   computed: {

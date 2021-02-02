@@ -205,15 +205,15 @@
           </form>
         </div>
       </div>
-      <div v-else class="row">
+      <div v-else class="row justify-content-center">
         <div
-          class="col-md-12 text-center bg-height bg-cover row justify-content-start align-items-center"
+          class="col-md-8 text-center bg-height bg-cover d-flex justify-content-start align-items-center"
           style="
             background-image: url(https://images.unsplash.com/photo-1557821552-17105176677c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1489&q=80);
           "
         >
           <p class="text-primary font-weight-bolder ml-5 h6">
-            您的購物車內還沒有任何商品！
+            購物車中目前沒有商品
             <button type="button" class="btn btn-accent" @click="toCustomerOrders">繼續逛逛</button>
           </p>
         </div>
