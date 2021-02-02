@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row d-flex justify-content-center" v-if="collected.length !== 0">
         <div class="col-md-8">
-          <div class="p-3 table-font" >
+          <div class="p-3 table-font">
             <h2 class="text-center text-primary py-3 font-weight-bolder">
               <i class="fab fa-pagelines mr-2"></i>收藏清單
             </h2>
@@ -20,10 +20,17 @@
               <tbody>
                 <tr v-for="(item, index) in collected" :key="index">
                   <td
-                    class="align-middle cursor d-md-table-cell d-none text-center "
+                    class="align-middle cursor d-md-table-cell d-none text-center"
                     @click="getOneProduct(item.id)"
                   >
-                    <img :src="item.imageUrl" class="tab-hover" width="80px" height="80px" alt srcset />
+                    <img
+                      :src="item.imageUrl"
+                      class="tab-hover"
+                      width="80px"
+                      height="80px"
+                      alt
+                      srcset
+                    />
                   </td>
 
                   <td class="align-middle cursor" @click="getOneProduct(item.id)">
@@ -59,9 +66,7 @@
             background-image: url(https://images.unsplash.com/photo-1576021257863-743c50564725?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1050&q=80);
           "
         >
-          <p class="text-primary font-weight-bolder h6 ">
-            收藏清單中目前沒有商品
-          </p>
+          <p class="text-primary font-weight-bolder h6">收藏清單中目前沒有商品</p>
           <button type="button" class="btn btn-accent" @click="toCustomerOrders">繼續逛逛</button>
         </div>
       </div>
