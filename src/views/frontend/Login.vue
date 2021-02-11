@@ -57,7 +57,7 @@ export default {
             if (response.data.success) {
               vm.$router.push('/admin/products');
             } else {
-              const text = this.$refs.fail; // 取得p元素
+              const text = vm.$refs.fail; // 取得p元素
               text.textContent = '登入失敗';
             }
           });

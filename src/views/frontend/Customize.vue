@@ -30,8 +30,10 @@
           <h4 class="text-danger mb-4 font-weight-bold">
             <i class="fas fa-exclamation-circle mr-2"></i>注意事項
           </h4>
-          <p>「訂製蛋糕」目前僅供６吋。</p>
-          <p>「訂製蛋糕」工作天數約7天(不含下標當日、週六日以及國定假日)。</p>
+          <p>
+            「訂製蛋糕」目前僅供６吋。<br />
+            「訂製蛋糕」工作天數約7天(不含下標當日、週六日以及國定假日)。
+          </p>
         </div>
         <div class="col-md-6" data-aos="fade-left">
           <div

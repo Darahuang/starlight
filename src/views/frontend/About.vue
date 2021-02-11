@@ -67,31 +67,39 @@
           <div class="col-md-6 p-3">
             <ul class="list-inline">
               <li class="mb-3">
-                <span class="mr-2 text-primary">
+                <span class="mr-2 text-heavy">
                   <i class="fas fa-phone"></i>
                 </span>
-                <span>聯絡電話：0912-345678</span>
+                <span
+                  >聯絡電話：<a class="hover text-decoration-none" href="tel:0912-345678"
+                    >0912-345678</a
+                  >
+                </span>
               </li>
               <li class="mb-3">
-                <span class="mr-2 text-primary">
+                <span class="mr-2 text-heavy">
                   <i class="fas fa-map-marker-alt"></i>
                 </span>
                 <span>地址：112台北市北投區大業路516巷2-22</span>
               </li>
               <li class="mb-3">
-                <span class="mr-2 text-primary">
+                <span class="mr-2 text-heavy">
                   <i class="fas fa-envelope"></i>
                 </span>
-                <span>信箱：starlight@gmail.com</span>
+                <span
+                  >信箱：<a class="hover text-decoration-none" href="mailto:starlight@gmail.com"
+                    >starlight@gmail.com</a
+                  ></span
+                >
               </li>
               <li class="mb-3">
-                <span class="mr-2 text-primary">
+                <span class="mr-2 text-heavy">
                   <i class="fas fa-user"></i>
                 </span>
                 <span>聯絡人：黃先生</span>
               </li>
               <li class="mb-3">
-                <span class="mr-2 text-primary">
+                <span class="mr-2 text-heavy">
                   <i class="fas fa-clock"></i>
                 </span>
                 <span>營業時間：11：00 ~ 18：00 每週一公休</span>

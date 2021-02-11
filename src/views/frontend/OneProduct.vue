@@ -5,7 +5,12 @@
       <div class="row mt-md-4 flex-sm-row-reverse">
         <div class="col-md-8">
           <div class="text-center bg-cover">
-            <img :src="oneProduct.imageUrl" class="img-fluid mt-md-4 productImg" alt srcset />
+            <img
+              :src="oneProduct.imageUrl"
+              class="img-fluid mt-md-4 productImg"
+              alt="產品圖片"
+              srcset
+            />
           </div>
         </div>
         <div class="col-md-4">
@@ -212,7 +217,7 @@ export default {
         vm.collected.push(favItem);
         const message = `${favItem.title} 加入收藏清單中!`;
         const status = 'warning';
-        this.$store.dispatch('updateMessage', { message, status });
+        vm.$store.dispatch('updateMessage', { message, status });
       }
       localStorage.setItem('collectedItems', JSON.stringify(vm.collected));
     },

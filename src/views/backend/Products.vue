@@ -93,7 +93,7 @@
                     @change="uploadFile"
                   />
                 </div>
-                <img class="img-fluid" :src="copyTempProduct.imageUrl" alt />
+                <img class="img-fluid" :src="copyTempProduct.imageUrl" alt="產品圖片" />
               </div>
               <div class="col-sm-8">
                 <div class="form-group">
@@ -264,7 +264,7 @@ export default {
     uploadFile() {
       const vm = this;
       const uploadFile = vm.$refs.files.files[0];
-      this.$store.dispatch('backend/uploadFile', uploadFile);
+      vm.$store.dispatch('backend/uploadFile', uploadFile);
     },
   },
   created() {

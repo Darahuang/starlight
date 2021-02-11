@@ -3,27 +3,27 @@
 @import "~bootstrap/scss/bootstrap";
 
 // utils
-@import "utils/Mixin";
+@import "utils/Mixin.scss";
 // pages
-@import "pages/About";
-@import "pages/CheckOrders";
-@import "pages/Checkout";
-@import "pages/CustomerOrders";
-@import "pages/Customize";
-@import "pages/dashboard";
-@import "pages/Index";
-@import "pages/Login";
-@import "pages/News";
-@import "pages/OneProduct";
+@import "pages/About.scss";
+@import "pages/CheckOrders.scss";
+@import "pages/Checkout.scss";
+@import "pages/CustomerOrders.scss";
+@import "pages/Customize.scss";
+@import "pages/dashboard.scss";
+@import "pages/Index.scss";
+@import "pages/Login.scss";
+@import "pages/News.scss";
+@import "pages/OneProduct.scss";
 // components
-@import "components/AlertMessage";
-@import "components/CheckoutStep";
-@import "components/Footer";
-@import "components/Header";
-@import "components/Layout";
-@import "components/Menu";
-@import "components/Sidebar";
-@import "components/Swiper";
+@import "components/AlertMessage.scss";
+@import "components/CheckoutStep.scss";
+@import "components/Footer.scss";
+@import "components/Header.scss";
+@import "components/Layout.scss";
+@import "components/Menu.scss";
+@import "components/Sidebar.scss";
+@import "components/Swiper.scss";
 
 
 

@@ -56,22 +56,33 @@
 }
 
 .card {
-  &.card-hover {
-    transition: 0.5s;
-    &:hover {
-      transform: rotate(3deg);
+  .selectedImg {
+    height: 200px;
+    @include tablet {
+      height: 150px;
     }
   }
-
   @include card;
   &:hover {
     & .cart {
       display: block;
-      text-align: center;
+      position:absolute;
+      bottom: 108px;
+      right: 10px;
     }
   }
   .cart {
     display: none;
+    @include mobile{
+      display: block;
+      position:absolute;
+      bottom: 108px;
+      right: 10px;
+    }
+    .cart-size{
+      font-size: 20px;
+    }
+     
   }
   .card-info {
     @include card-info;
@@ -79,12 +90,15 @@
   .card-height {
     height: 250px;
     @include tablet {
-      height: 150px;
+      height: 175px;
     }
+  }
+  .card-spacing{
+    letter-spacing: 0.5rem;
   }
 }
 
-$custom-gutter-width: 20px; // 將欄距改成 20px
+$custom-gutter-width: 10px; // 將欄距改成 20px
 .custom-gutters {
   &.container {
     padding-left: $custom-gutter-width / 2;

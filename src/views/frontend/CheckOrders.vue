@@ -65,7 +65,13 @@
           <div class="row" v-for="item in checkOrder.products" :key="item.id">
             <div class="col-4 mb-3">
               <div class="img">
-                <img :src="item.product.imageUrl" alt srcset width="80px" height="80px" />
+                <img
+                  :src="item.product.imageUrl"
+                  alt="產品圖片"
+                  srcset
+                  width="80px"
+                  height="80px"
+                />
               </div>
             </div>
             <div class="col-8">

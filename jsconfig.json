@@ -1,5 +1,7 @@
 {
     "include": [
-        "./src/*"
+        "./src/*",
+        "./src/assets/js/*",
+        "node_modules/swiper/*"
     ]
 }

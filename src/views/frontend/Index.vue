@@ -38,74 +38,26 @@
         <router-link
           to="/news"
           class="d-flex align-items-center text-decoration-none h6 bg-primary text-white px-3 py-1 text-center float-right mb-3"
-          ><p class="mt-0 mb-0">More</p>
+          ><p class="mt-0 mb-0">更多</p>
           <i class="fas fa-arrow-alt-circle-right ml-2 arrow fa-2x"></i
           ><i class="far fa-arrow-alt-circle-right ml-2 arrow-hover fa-2x"></i
         ></router-link>
       </div>
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-4" v-for="(item, index) in events.slice(0, 3)" :key="index">
           <router-link to="/news" class="text-decoration-none">
             <div class="card mb-5">
               <div
-                style="
-                  background-image: url(https://images.pexels.com/photos/2679968/pexels-photo-2679968.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500);
-                "
+                :style="{ backgroundImage: `url(${item.imageUrl})` }"
                 class="bg-cover card-image card-height"
               ></div>
               <div class="card-body">
                 <span class="badge badge-accent float-right ml-2 py-1 px-3">期間限定</span>
-                <h5 class="card-title font-weight-bolder">萬聖節限定</h5>
+                <h5 class="card-title font-weight-bolder">{{ item.event }}</h5>
                 <div>
-                  <p class="card-text"><i class="fas fa-clock mr-2"></i>9月28,2020</p>
+                  <p class="card-text"><i class="fas fa-clock mr-2"></i>{{ item.date }}</p>
                   <p class="h6 card-text">
-                    南瓜限定特製餐點
-                    <i class="fas fa-heart ml-2"></i>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </router-link>
-        </div>
-        <div class="col-md-4">
-          <router-link to="/news" class="text-decoration-none">
-            <div class="card mb-5">
-              <div
-                style="
-                  background-image: url(https://images.unsplash.com/photo-1572928899385-6dc3b05531ce?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80);
-                "
-                class="bg-cover card-image card-height"
-              ></div>
-              <div class="card-body">
-                <span class="badge badge-accent float-right ml-2 py-1 px-3">期間限定</span>
-                <h5 class="card-title font-weight-bolder">中秋節限定</h5>
-                <div>
-                  <p class="card-text"><i class="fas fa-clock mr-2"></i>8月18,2020</p>
-                  <p class="h6 card-text">
-                    中秋限定禮盒
-                    <i class="fas fa-heart ml-2"></i>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </router-link>
-        </div>
-        <div class="col-md-4">
-          <router-link to="news" class="text-decoration-none">
-            <div class="card mb-5">
-              <div
-                style="
-                  background-image: url(https://images.pexels.com/photos/2312124/pexels-photo-2312124.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940);
-                "
-                class="bg-cover card-image card-height"
-              ></div>
-              <div class="card-body">
-                <span class="badge badge-accent float-right ml-2 py-1 px-3">期間限定</span>
-                <h5 class="card-title font-weight-bolder">歡慶父親節</h5>
-                <div>
-                  <p class="card-text"><i class="fas fa-clock mr-2"></i>7月18,2020</p>
-                  <p class="h6 card-text">
-                    快閃88折
+                    {{ item.content }}
                     <i class="fas fa-heart ml-2"></i>
                   </p>
                 </div>
@@ -124,21 +76,20 @@
           <router-link
             to="/customer_orders"
             class="d-flex align-items-center float-right text-decoration-none h6 bg-primary text-white text-center mb-3 px-3 py-1"
-            ><p class="mt-0 mb-0">More</p>
+            ><p class="mt-0 mb-0">更多</p>
             <i class="far fa-arrow-alt-circle-right ml-2 arrow fa-2x"></i>
             <i class="fas fa-arrow-alt-circle-right ml-2 arrow-hover fa-2x"></i>
           </router-link>
         </div>
         <div class="row">
           <div class="col-md-3 col-6 mb-4" v-for="item in products" :key="item.id">
-            <div class="card card-hover">
+            <div class="card">
               <div
-                class="card-image cursor bg-cover"
+                class="cursor bg-cover selectedImg"
                 @click="getOneProduct(item.id)"
-                style="height: 200px"
                 :style="{ backgroundImage: `url(${item.imageUrl})` }"
               ></div>
-              <div class="card-body" style="height: 150px">
+              <div class="card-body">
                 <a
                   class="card-title text-decoration-none"
                   href="#"
@@ -160,11 +111,11 @@
                 <div class="cart mt-3">
                   <button
                     type="button"
-                    class="btn btn-primary btn-sm ml-auto"
+                    class="btn btn-sm ml-auto text-primary bg-white p-2 rounded-circle"
                     @click="addtoCart(item.id)"
                     :disabled="disable"
                   >
-                    加到購物車
+                    <i class="fas fa-shopping-cart cart-size"></i>
                   </button>
                 </div>
               </div>
@@ -182,7 +133,7 @@
           <router-link
             to="/customize"
             class="d-flex align-items-center float-right text-decoration-none h6 bg-primary text-white text-center px-3 py-1 mb-3"
-            ><p class="mt-0 mb-0">More</p>
+            ><p class="mt-0 mb-0">更多</p>
             <i class="fas fa-arrow-alt-circle-right ml-2 arrow fa-2x"></i
             ><i class="far fa-arrow-alt-circle-right ml-2 arrow-hover fa-2x"></i
           ></router-link>
@@ -268,47 +219,53 @@
     <section class="container mt-5" data-aos="fade-up">
       <div class="row">
         <div class="col-md-4">
-          <router-link to="/about">
+          <router-link to="/about" class="text-decoration-none">
             <div class="card mb-5">
               <div
                 style="
                   background-image: url(https://images.unsplash.com/photo-1543685823-10e976e165d7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1342&q=80);
                 "
-                class="bg-cover card-image card-height"
-              ></div>
-              <div class="card-body card-info d-flex justify-content-center align-items-center">
-                <h6 class="text-white">關於我們</h6>
+                class="bg-cover card-image card-height d-flex align-items-center justify-content-center"
+              >
+                <span class="bg-slight p-3 h6 card-spacing">關於我們</span>
               </div>
+              <!-- <div class="card-body card-info d-flex justify-content-center align-items-center">
+                <h6 class="text-white">關於我們</h6>
+              </div> -->
             </div>
           </router-link>
         </div>
         <div class="col-md-4">
-          <router-link to="/customer_orders">
+          <router-link to="/customer_orders" class="text-decoration-none">
             <div class="card mb-5">
               <div
                 style="
                   background-image: url(https://images.unsplash.com/photo-1587918899471-ab5a546c54a2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80);
                 "
-                class="bg-cover card-image card-height"
-              ></div>
-              <div class="card-body card-info d-flex justify-content-center align-items-center">
-                <h6 class="text-white">餐點介紹</h6>
+                class="bg-cover card-image card-height d-flex align-items-center justify-content-center"
+              >
+                <span class="bg-slight p-3 h6 card-spacing">餐點介紹</span>
               </div>
+              <!-- <div class="card-body card-info d-flex justify-content-center align-items-center">
+                <h6 class="text-white">餐點介紹</h6>
+              </div> -->
             </div>
           </router-link>
         </div>
         <div class="col-md-4">
-          <router-link to="/check_orders">
+          <router-link to="/check_orders" class="text-decoration-none">
             <div class="card mb-5">
               <div
                 style="
-                  background-image: url(https://images.unsplash.com/photo-1586810165616-94c631fc2f79?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80);
+                  background-image: url(https://images.unsplash.com/photo-1499744937866-d7e566a20a61?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1350&q=80);
                 "
-                class="bg-cover card-image card-height"
-              ></div>
-              <div class="card-body card-info d-flex justify-content-center align-items-center">
-                <h6 class="text-white">訂單查詢</h6>
+                class="bg-cover card-image card-height d-flex align-items-center justify-content-center"
+              >
+                <span class="bg-slight p-3 h6 card-spacing">訂單查詢</span>
               </div>
+              <!-- <div class="card-body card-info d-flex justify-content-center align-items-center">
+                <h6 class="text-white">訂單查詢</h6>
+              </div> -->
             </div>
           </router-link>
         </div>
@@ -321,6 +278,7 @@
 import Header from '@/components/Header.vue';
 import Swiper from '@/components/Swiper.vue';
 import { mapState } from 'vuex';
+import events from '../../assets/js/events';
 
 export default {
   components: {
@@ -330,6 +288,7 @@ export default {
   data() {
     return {
       email: '',
+      events,
     };
   },
   methods: {
@@ -364,7 +323,7 @@ export default {
         vm.$store.dispatch('addToCart', { id, qty });
       }
     },
-    getProducts(page = 3) {
+    getProducts(page = 2) {
       this.$store.dispatch('getProducts', page);
     },
     getOneProduct(id) {

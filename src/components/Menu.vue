@@ -38,7 +38,7 @@
             </li>
           </ul>
           <div class="d-flex justify-content-end align-items-center">
-            <div class="position-relative" v-if="collected.length !== 0">
+            <div class="position-relative" v-if="collected.length !== 0" @click="collapse">
               <router-link
                 to="/favlist"
                 class="nav-link link-hover text-secondary h5 text-center mb-0"
@@ -49,7 +49,7 @@
                 }}</span>
               </router-link>
             </div>
-            <div class="dropdown" v-else>
+            <div class="dropdown" v-else @click="collapse">
               <a
                 class="nav-link link-hover text-secondary h5 text-center mb-0 ml-1"
                 href="#"
@@ -72,7 +72,7 @@
                 </div>
               </div>
             </div>
-            <div class="position-relative" v-if="cart.total !== 0">
+            <div class="position-relative" v-if="cart.total !== 0" @click="collapse">
               <router-link
                 to="/checkout"
                 class="nav-link link-hover text-secondary h5 text-center mb-0"
@@ -83,7 +83,7 @@
                 >
               </router-link>
             </div>
-            <div class="dropdown" v-else>
+            <div class="dropdown" v-else @click="collapse">
               <a
                 class="nav-link link-hover text-secondary h5 text-center mb-0 ml-1"
                 href="#"

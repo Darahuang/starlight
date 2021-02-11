@@ -141,7 +141,7 @@
             <div class="form-group">
               <label for="is_paid">付款狀態:</label>
               <span v-if="copyTempOrder.is_paid">已付款</span>
-              <div v-if="!copyTempOrder.is_paid" class="form-check form-check-inline">
+              <div v-else class="form-check form-check-inline">
                 <input
                   type="checkbox"
                   class="form-check-input"

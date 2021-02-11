@@ -5,9 +5,9 @@
       <h3 class="text-center text-primary mr-2 mb-5 font-weight-bold">
         <i class="fab fa-pagelines mr-2"></i>猜你喜歡
       </h3>
-      <div class="swiper-container container">
-        <div class="swiper-wrapper">
-          <div class="swiper-slide" v-for="item in products" :key="item.id">
+      <div class="container">
+        <swiper ref="mySwiper" :options="swiperOption">
+          <swiper-slide v-for="item in products" :key="item.id">
             <div class="row justify-content-center">
               <div class="col mb-3">
                 <div class="bg-white">
@@ -29,8 +29,8 @@
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+          </swiper-slide>
+        </swiper>
       </div>
     </section>
   </div>
@@ -38,20 +38,12 @@
 
 <script>
 import { mapState } from 'vuex';
-import Swiper from '../../node_modules/swiper/swiper-bundle';
+import { Swiper, SwiperSlide } from 'vue-awesome-swiper';
 
 export default {
   data() {
-    return {};
-  },
-  mounted() {
-    this.initSwiper();
-    this.getProducts();
-  },
-  methods: {
-    initSwiper() {
-      // eslint-disable-next-line no-new
-      new Swiper('.swiper-container', {
+    return {
+      swiperOption: {
         slidesPerView: 1,
         spaceBetween: 10,
         autoplay: {
@@ -65,8 +57,18 @@ export default {
             spaceBetween: 10,
           },
         },
-      });
-    },
+      },
+    };
+  },
+  components: {
+    Swiper,
+    SwiperSlide,
+  },
+  mounted() {
+    this.getProducts();
+    this.swiper.slideTo(3, 1000, false);
+  },
+  methods: {
     getProducts(page = 1) {
       this.$store.dispatch('getProducts', page);
     },
@@ -76,10 +78,13 @@ export default {
   },
   computed: {
     ...mapState(['isLoading', 'status', 'products']),
+    swiper() {
+      return this.$refs.mySwiper.$swiper;
+    },
   },
 };
 </script>
 
 <style scoped>
-@import '../../node_modules/swiper/swiper-bundle.css';
+@import '~swiper/css/swiper.css';
 </style>

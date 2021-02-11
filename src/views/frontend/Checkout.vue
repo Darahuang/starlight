@@ -27,7 +27,7 @@
                       <tr>
                         <th width="20%" class="d-md-table-cell d-none text-center"></th>
                         <th>商品名稱</th>
-                        <th width="20%" class="d-md-table-cell d-none text-center">數量</th>
+                        <th width="20%" class="text-center">數量</th>
                         <th width="15%">單價</th>
                         <th width="15%">刪除</th>
                       </tr>
@@ -35,13 +35,19 @@
                     <tbody v-for="item in cart.carts" :key="item.id">
                       <tr>
                         <td class="align-middle d-md-table-cell d-none text-center">
-                          <img :src="item.product.imageUrl" width="80px" height="80px" alt srcset />
+                          <img
+                            :src="item.product.imageUrl"
+                            width="80px"
+                            height="80px"
+                            alt="產品圖片"
+                            srcset
+                          />
                         </td>
                         <td class="align-middle">
                           {{ item.product.title }}
                           <div class="text-heavy" v-if="item.coupon">已套用折扣碼</div>
                         </td>
-                        <td class="align-middle d-md-table-cell d-none text-center">
+                        <td class="align-middle text-center">
                           <div class="input-group mb-3">
                             <div class="input-group-prepend" id="button-addon3">
                               <button
@@ -88,8 +94,7 @@
                     <tfoot class="bg-light">
                       <tr>
                         <td class="d-md-table-cell d-none"></td>
-                        <td class="d-md-table-cell d-none"></td>
-                        <td colspan="2" class="text-right border-top-0">總計</td>
+                        <td colspan="3" class="text-right border-top-0">總計</td>
                         <td class="h5 text-danger border-top-0">
                           {{ cart.final_total }}
                         </td>

@@ -6,7 +6,7 @@
           <img
             src="../assets/imgs/logo.svg"
             class="img-fluid"
-            alt
+            alt="品牌logo"
             srcset
             style="width: 150px; height: 150px"
           />
