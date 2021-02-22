@@ -1,11 +1,14 @@
 .qty-input {
   width: 30px;
   border-radius: 0px;
-  padding: 0
+  padding: 0;
 }
-.bg-cover {
-  @include bg-cover;
-}
+
 .bg-height {
   height: 400px;
+}
+.cart-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
 }

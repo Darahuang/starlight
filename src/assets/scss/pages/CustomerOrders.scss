@@ -1,26 +1,20 @@
-.card {
-  @include card;
-}
-
-.bg-cover {
-  @include bg-cover;
-}
 .saved-item {
+  display:flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
   right: 10px;
-  top: 170px;
+  top: 10px;
   z-index: 2;
   width: 30px;
   height: 30px;
   font-size: 18px;
   border-radius: 50%;
   background-color: #cbe2d4a8;
-  line-height: 30px;
   cursor: default;
+    
 }
-.saved-item-icon {
-  margin-left: 5px;
-}
+
 .tab-hover:hover {
   border: 2px solid #113622a6;
 }

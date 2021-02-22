@@ -29,19 +29,13 @@
                         <th>商品名稱</th>
                         <th width="20%" class="text-center">數量</th>
                         <th width="15%">單價</th>
-                        <th width="15%">刪除</th>
+                        <th width="10%">刪除</th>
                       </tr>
                     </thead>
                     <tbody v-for="item in cart.carts" :key="item.id">
                       <tr>
                         <td class="align-middle d-md-table-cell d-none text-center">
-                          <img
-                            :src="item.product.imageUrl"
-                            width="80px"
-                            height="80px"
-                            alt="產品圖片"
-                            srcset
-                          />
+                          <img :src="item.product.imageUrl" class="cart-image" alt="產品圖片">
                         </td>
                         <td class="align-middle">
                           {{ item.product.title }}

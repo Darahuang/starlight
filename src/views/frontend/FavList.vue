@@ -25,9 +25,7 @@
                   >
                     <img
                       :src="item.imageUrl"
-                      class="tab-hover"
-                      width="80px"
-                      height="80px"
+                      class="tab-hover cart-image"
                       alt="產品圖片"
                       srcset
                     />

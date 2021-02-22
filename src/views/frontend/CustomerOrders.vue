@@ -52,7 +52,7 @@
             <div class="tab-pane active" :id="category">
               <div class="row">
                 <div class="col-lg-4 col-md-6 mb-4" v-for="item in filterCategory" :key="item.id">
-                  <div class="card tab-hover">
+                  <div class="card">
                     <div class="saved-item text-primary" @click="addToFavList(item.id)">
                       <i
                         class="far fa-heart saved-item-icon text-danger"
@@ -159,7 +159,6 @@
             </div>
           </div>
         </div>
-        <div></div>
       </div>
     </div>
   </div>

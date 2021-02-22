@@ -139,14 +139,14 @@
               aria-labelledby="list-messages-list"
             >
               <h6 class="text-primary font-weight-bold">宅配需知</h6>
-              <p>
+              <p class="line-height">
                 宅配一定有風險，下單前請三思，運送過程可能會因車體晃動、路面不平等而有碰撞的狀態，風險須自行承擔，黑貓已公告不受理蛋糕類的毀壞補償，除非嚴重人為因素的變形，黑貓宅配才會視狀況退還"運費"，可以接受者再下單。
               </p>
             </div>
           </div>
         </div>
       </div>
-      <h3 class="text-primary font-weight-bold">相關商品</h3>
+      <h4 class="text-primary font-weight-bold">相關商品</h4>
       <div class="row">
         <div
           class="col-md-4 cursor mb-3 mb-md-0"

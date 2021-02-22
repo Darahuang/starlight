@@ -34,7 +34,7 @@ export default {
       $('html, body').animate({ scrollTop: 0 }, 1500);
     },
   },
-  created() {
+  mounted() {
     // 偵測頁面往下滑超過 400px 就讓 Gotop 按鈕出現
     function showBtnCondition() {
       if ($(this).scrollTop() > 400) {
