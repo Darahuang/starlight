@@ -3,24 +3,24 @@
 @import "~bootstrap/scss/bootstrap";
 
 // utils
-@import "utils/Mixin.scss";
+@import "utils/Mixin";
 // pages
-@import "pages/About.scss";
-@import "pages/Checkout.scss";
-@import "pages/CustomerOrders.scss";
-@import "pages/dashboard.scss";
-@import "pages/Index.scss";
-@import "pages/Login.scss";
-@import "pages/OneProduct.scss";
+@import "pages/About";
+@import "pages/Checkout";
+@import "pages/CustomerOrders";
+@import "pages/dashboard";
+@import "pages/Index";
+@import "pages/Login";
+@import "pages/OneProduct";
 // components
-@import "components/AlertMessage.scss";
-@import "components/CheckoutStep.scss";
-@import "components/Footer.scss";
-@import "components/Header.scss";
-@import "components/Layout.scss";
-@import "components/Menu.scss";
-@import "components/Sidebar.scss";
-@import "components/Swiper.scss";
+@import "components/AlertMessage";
+@import "components/CheckoutStep";
+@import "components/Footer";
+@import "components/Header";
+@import "components/Layout";
+@import "components/Menu";
+@import "components/Sidebar";
+@import "components/Swiper";
 
 
 
