@@ -48,21 +48,36 @@ export default {
     };
   },
   methods: {
+    // login() {
+    //   const vm = this;
+    //   const api = `${process.env.VUE_APP_APIPATH}/admin/signin`;
+    //   vm.$validator.validate().then((result) => {
+    //     if (result) {
+    //       vm.axios.post(api, vm.user).then((response) => {
+    //         if (response.data.success) {
+    //           vm.$router.push('/admin/products');
+    //         } else {
+    //           const text = vm.$refs.fail; // 取得p元素
+    //           text.textContent = '登入失敗';
+    //         }
+    //       });
+    //     }
+    //   });
+    // },
     login() {
       const vm = this;
       const api = `${process.env.VUE_APP_APIPATH}/admin/signin`;
-      vm.$validator.validate().then((result) => {
-        if (result) {
-          vm.axios.post(api, vm.user).then((response) => {
-            if (response.data.success) {
-              vm.$router.push('/admin/products');
-            } else {
-              const text = vm.$refs.fail; // 取得p元素
-              text.textContent = '登入失敗';
-            }
-          });
-        }
-      });
+      this.axios.post(api, vm.user)
+        .then((res) => {
+          if (res.data.success) {
+            const { token, expired } = res.data;
+            document.cookie = `starlightselect=${token};expires=${new Date(expired)};`;
+            vm.$router.push('/admin/products');
+          } else {
+            const text = vm.$refs.fail; // 取得p元素
+            text.textContent = '登入失敗';
+          }
+        });
     },
   },
 };

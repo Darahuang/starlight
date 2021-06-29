@@ -24,5 +24,9 @@ export default {
     Sidebar,
     Alert,
   },
+  created() {
+    const token = document.cookie.replace(/(?:(?:^|.*;\s*)starlightselect\s*=\s*([^;]*).*$)|^.*$/, '$1');
+    this.$http.defaults.headers.common.Authorization = `${token}`;
+  },
 };
 </script>
